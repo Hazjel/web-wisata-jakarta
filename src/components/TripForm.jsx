@@ -16,7 +16,7 @@ export default function TripForm({ hotels, venues, loading, onSubmit }) {
 
   const hotelOptions = hotels
     .filter((h) => h.name.toLowerCase().includes(hotelSearch.toLowerCase()))
-    .slice(0, 30)
+    .sort((a, b) => b.google_rating - a.google_rating)
 
   function submit(e) {
     e.preventDefault()
@@ -96,7 +96,8 @@ export default function TripForm({ hotels, venues, loading, onSubmit }) {
         Hotel (titik berangkat/pulang)
         <input value={hotelSearch} onChange={(e) => setHotelSearch(e.target.value)}
           placeholder="cari hotel..." />
-        <select value={hotelId} onChange={(e) => setHotelId(e.target.value)} size="5">
+        <small>{hotelOptions.length} hotel tersedia</small>
+        <select value={hotelId} onChange={(e) => setHotelId(e.target.value)} size="6">
           <option value="">(default: pusat kota)</option>
           {hotelOptions.map((h) => (
             <option key={h.hotel_id} value={h.hotel_id}>
