@@ -40,7 +40,7 @@ export default function ItineraryResult({ data }) {
                     <td>{v.start}–{v.depart}</td>
                     <td>
                       <b>{v.name}</b>
-                      <small> {v.venue_category}</small>
+                      <span className="venue-tag">{v.venue_category}</span>
                       {v.wait_min > 0 &&
                         <small className="wait"> (menunggu buka {Math.round(v.wait_min)} mnt)</small>}
                     </td>

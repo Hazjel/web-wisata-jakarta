@@ -32,32 +32,39 @@ export default function App() {
   }
 
   return (
-    <div className="layout">
-      <aside className="sidebar">
-        <h1>Wisata Jakarta 🗺️</h1>
+    <div className="app-shell">
+      <header className="topbar">
+        <h1 className="brand">
+          Jakarta Routes <span className="brand-badge">HUMIC Research</span>
+        </h1>
         <p className="tagline">
           Itinerary multi-hari — Content-Based Filtering + optimasi rute GA/PSO
         </p>
-        <TripForm hotels={hotels} venues={venues} loading={loading}
-          onSubmit={handleSubmit} />
-        {error && <p className="error">{error}</p>}
-      </aside>
+      </header>
 
-      <main className="content">
-        {itinerary ? (
-          <>
-            <ItineraryMap data={itinerary} />
-            <ItineraryResult data={itinerary} />
-          </>
-        ) : (
-          <div className="placeholder">
-            <p>Isi form di kiri lalu klik <b>Susun Itinerary</b>.</p>
-            <p>Mode <b>otomatis</b>: sistem memilih venue dari preferensimu (CBF + MMR).</p>
-            <p>Mode <b>manual</b>: centang sendiri venue yang ingin dikunjungi —
-              sistem menyusun urutan & pembagian harinya.</p>
-          </div>
-        )}
-      </main>
+      <div className="layout">
+        <aside className="sidebar">
+          <TripForm hotels={hotels} venues={venues} loading={loading}
+            onSubmit={handleSubmit} />
+          {error && <p className="error">{error}</p>}
+        </aside>
+
+        <main className="content">
+          {itinerary ? (
+            <>
+              <ItineraryMap data={itinerary} />
+              <ItineraryResult data={itinerary} />
+            </>
+          ) : (
+            <div className="placeholder">
+              <p>Isi form di kiri lalu klik <b>Rekomendasikan</b>.</p>
+              <p>Mode <b>otomatis</b>: sistem memilih venue dari preferensimu (CBF + MMR).</p>
+              <p>Mode <b>manual</b>: centang sendiri venue yang ingin dikunjungi —
+                sistem menyusun urutan & pembagian harinya.</p>
+            </div>
+          )}
+        </main>
+      </div>
     </div>
   )
 }

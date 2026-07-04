@@ -109,7 +109,7 @@ export default function TripForm({ hotels, venues, loading, onSubmit }) {
       {error && <p className="error">{error}</p>}
 
       <button type="submit" className="submit" disabled={loading}>
-        {loading ? 'Menyusun itinerary…' : 'Susun Itinerary'}
+        {loading ? 'Menyusun itinerary…' : <>🔍 Rekomendasikan</>}
       </button>
     </form>
   )
