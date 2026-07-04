@@ -11,7 +11,6 @@ export default function TripForm({ hotels, venues, loading, onSubmit }) {
   const [startDay, setStartDay] = useState('Sabtu')
   const [hotelId, setHotelId] = useState('')
   const [hotelSearch, setHotelSearch] = useState('')
-  const [algorithm, setAlgorithm] = useState('ga')
   const [selectedVenues, setSelectedVenues] = useState([])
   const [error, setError] = useState('')
 
@@ -37,7 +36,8 @@ export default function TripForm({ hotels, venues, loading, onSubmit }) {
       start_day: startDay,
       hotel_id: hotelId === '' ? null : Number(hotelId),
       venue_ids: mode === 'manual' ? selectedVenues : null,
-      algorithm,
+      // algorithm tidak dikirim -> backend pilih otomatis dari hasil
+      // eksperimen (hybrid utk 1-3 hari, GA utk 4-5 hari)
     })
   }
 
@@ -103,15 +103,6 @@ export default function TripForm({ hotels, venues, loading, onSubmit }) {
               {h.name} — ⭐{h.google_rating}
             </option>
           ))}
-        </select>
-      </label>
-
-      <label>
-        Algoritma optimasi
-        <select value={algorithm} onChange={(e) => setAlgorithm(e.target.value)}>
-          <option value="ga">Genetic Algorithm (default)</option>
-          <option value="pso">Particle Swarm Optimization</option>
-          <option value="hybrid">GA-PSO Hybrid</option>
         </select>
       </label>
 

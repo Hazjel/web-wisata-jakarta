@@ -54,13 +54,15 @@ Contoh body `POST /itinerary`:
   "n_days": 2,
   "start_day": "Sabtu",
   "hotel_id": 0,
-  "venue_ids": null,
-  "algorithm": "ga"
+  "venue_ids": null
 }
 ```
 
 - `venue_ids: null` → mode otomatis (kandidat dari CBF, `preference_text` wajib)
 - `venue_ids: ["6", "328", ...]` → mode manual (`preference_text` opsional)
+- `algorithm` (opsional, default `auto`): backend pilih otomatis berdasar hasil
+  eksperimen riset — **Hybrid** untuk 1–3 hari, **GA** untuk 4–5 hari. Nilai
+  eksplisit `ga`/`pso`/`hybrid` tetap didukung untuk keperluan riset.
 
 Response: `hotel`, `params`, `summary` (fitness, n_visited, travel_total_min,
 violations, …), `days[].visits[]` (type `visit`/`break`/`return`, jam, koordinat),
