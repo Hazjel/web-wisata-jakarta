@@ -1,0 +1,94 @@
+/* Layout 2 kolom: form kiri, hasil+peta kanan */
+.layout {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  height: 100vh;
+}
+
+.sidebar {
+  padding: 1.2rem;
+  overflow-y: auto;
+  border-right: 1px solid #ddd;
+  background: #fafafa;
+}
+.sidebar h1 { margin: 0 0 0.2rem; font-size: 1.4rem; }
+.tagline { margin: 0 0 1rem; font-size: 0.82rem; color: #666; }
+
+.content {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.map { height: 55vh; min-height: 380px; }
+.placeholder { padding: 3rem; color: #555; line-height: 1.7; }
+
+/* --- form --- */
+.trip-form { display: flex; flex-direction: column; gap: 0.8rem; }
+.trip-form h2 { margin: 0; font-size: 1.05rem; }
+.trip-form label { display: flex; flex-direction: column; gap: 0.25rem;
+  font-size: 0.85rem; font-weight: 600; }
+.trip-form input, .trip-form select {
+  padding: 0.45rem 0.6rem; border: 1px solid #ccc; border-radius: 6px;
+  font-size: 0.85rem; font-weight: 400; background: #fff;
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.6rem; }
+
+.mode-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; }
+.mode-toggle button {
+  padding: 0.5rem; border: 1px solid #ccc; border-radius: 6px;
+  background: #fff; cursor: pointer; font-size: 0.82rem;
+}
+.mode-toggle button.active {
+  background: #1d4ed8; color: #fff; border-color: #1d4ed8; font-weight: 600;
+}
+
+.submit {
+  padding: 0.7rem; border: none; border-radius: 8px; cursor: pointer;
+  background: #15803d; color: #fff; font-size: 0.95rem; font-weight: 700;
+}
+.submit:disabled { background: #9ca3af; cursor: wait; }
+.error { color: #b91c1c; font-size: 0.85rem; }
+
+/* --- venue picker (mode manual) --- */
+.venue-picker { border: 1px solid #ddd; border-radius: 8px; padding: 0.6rem;
+  background: #fff; }
+.picker-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; }
+.picker-controls input, .picker-controls select {
+  padding: 0.35rem 0.5rem; border: 1px solid #ccc; border-radius: 6px;
+  font-size: 0.8rem;
+}
+.picker-count { margin: 0.4rem 0; font-size: 0.78rem; color: #1d4ed8;
+  font-weight: 700; }
+.picker-list { max-height: 260px; overflow-y: auto; display: flex;
+  flex-direction: column; gap: 2px; }
+.picker-item { display: grid; grid-template-columns: auto 1fr; gap: 0.4rem;
+  align-items: start; padding: 0.25rem 0.3rem; border-radius: 4px;
+  font-weight: 400 !important; cursor: pointer; }
+.picker-item:hover { background: #f1f5f9; }
+.picker-name { font-size: 0.8rem; }
+.picker-meta { grid-column: 2; font-size: 0.7rem; color: #777; }
+
+/* --- hasil itinerary --- */
+.itinerary-result { padding: 1rem 1.4rem 2rem; }
+.summary { display: flex; flex-wrap: wrap; gap: 1rem; padding: 0.6rem 0.9rem;
+  background: #eff6ff; border-radius: 8px; font-size: 0.85rem;
+  margin-bottom: 1rem; }
+.day-card { margin-bottom: 1.2rem; }
+.day-card h3 { margin: 0 0 0.4rem; font-size: 1rem; border-bottom: 2px solid
+  #1d4ed8; padding-bottom: 0.25rem; }
+.day-card table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.day-card td { padding: 0.35rem 0.5rem; border-bottom: 1px solid #eee;
+  vertical-align: top; }
+.day-card td:first-child { white-space: nowrap; font-variant-numeric:
+  tabular-nums; color: #333; width: 7.5rem; }
+.day-card small { color: #777; }
+.day-card .wait { color: #b45309; }
+.travel { white-space: nowrap; color: #555; text-align: right; }
+.row-break td { background: #fefce8; }
+.row-return td { background: #f8fafc; color: #555; }
+.not-fitted { padding: 0.6rem 0.9rem; background: #fef2f2; border-radius: 8px;
+  font-size: 0.82rem; }
+
+/* marker hotel emoji */
+.hotel-marker { font-size: 22px; text-align: center; line-height: 28px;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5)); }
