@@ -4,6 +4,7 @@ import heroDufan from '../assets/hero-dufan.jpg'
 import heroMonas from '../assets/hero-monas-museum.jpg'
 import heroPancoran from '../assets/hero-pancoran.jpg'
 import heroTmii from '../assets/hero-tmii.jpg'
+import Icon from '../components/Icon.jsx'
 import SelectionPanel from '../components/SelectionPanel.jsx'
 import VenueCard from '../components/VenueCard.jsx'
 import { CATEGORY_GROUPS, groupOf } from '../lib/categories.js'
@@ -48,11 +49,16 @@ export default function Home({ venues }) {
         </div>
         <div className="hero-overlay" />
         <div className="hero-inner">
-          <h1>Jelajahi Jakarta dengan<br />Rekomendasi Terbaik</h1>
-          <p>Temukan rute perjalanan unik Anda di jantung Indonesia.</p>
-          <a href="#destinasi" className="hero-cta">Mulai Perjalanan Anda</a>
+          <span className="hero-eyebrow">Riset HUMIC · {venues.length} destinasi terkurasi</span>
+          <h1>Satu hari atau lima,<br />rutenya kami yang susun.</h1>
+          <p>Pilih tempat yang kamu mau — sistem menyusun urutan kunjungan,
+            pembagian hari, dan jam optimalnya. Tanpa bolak-balik, tanpa
+            tabrakan jam buka.</p>
+          <a href="#destinasi" className="hero-cta">Mulai pilih destinasi →</a>
         </div>
-        <div className="hero-caption">📍 {HERO_SLIDES[slide].label}</div>
+        <div className="hero-caption">
+          <Icon name="pin" size={14} /> {HERO_SLIDES[slide].label}
+        </div>
         <div className="hero-dots">
           {HERO_SLIDES.map((s, i) => (
             <button key={s.label} className={i === slide ? 'active' : ''}
@@ -63,15 +69,20 @@ export default function Home({ venues }) {
 
       <div className="home-layout" id="destinasi">
         <section className="home-main">
-          <h2>Pilih Destinasi Anda</h2>
-          <p className="section-sub">
-            Pilih lokasi yang ingin dikunjungi untuk rute kustom, atau langsung ke
-            halaman Perancangan untuk rekomendasi otomatis dari preferensimu.
-          </p>
+          <div className="section-head">
+            <h2>Destinasi</h2>
+            <p className="section-sub">
+              {filtered.length} tempat cocok. Centang yang menarik, atau lewati ke
+              <strong> Perancangan</strong> untuk biar sistem yang memilihkan.
+            </p>
+          </div>
 
           <div className="filter-row">
-            <input className="filter-search" placeholder="cari destinasi..."
-              value={search} onChange={(e) => { setSearch(e.target.value); setShown(PAGE) }} />
+            <span className="filter-search-wrap">
+              <Icon name="search" size={17} className="filter-search-icon" />
+              <input className="filter-search" placeholder="Cari nama destinasi…"
+                value={search} onChange={(e) => { setSearch(e.target.value); setShown(PAGE) }} />
+            </span>
           </div>
           <div className="filter-pills">
             <button className={filter === 'semua' ? 'active' : ''}
@@ -79,20 +90,22 @@ export default function Home({ venues }) {
             {CATEGORY_GROUPS.map((g) => (
               <button key={g.id} className={filter === g.id ? 'active' : ''}
                 onClick={() => { setFilter(g.id); setShown(PAGE) }}>
-                {g.icon} {g.label}
+                <Icon name={g.icon} size={15} /> {g.label}
               </button>
             ))}
           </div>
 
           <div className="venue-grid">
-            {filtered.slice(0, shown).map((v) => (
-              <VenueCard key={v.venue_id} venue={v} />
+            {filtered.slice(0, shown).map((v, i) => (
+              <VenueCard key={v.venue_id} venue={v}
+                featured={i === 0 && !search && filter === 'semua'} />
             ))}
           </div>
-          {filtered.length === 0 && <p>Tidak ada destinasi cocok.</p>}
+          {filtered.length === 0 && <p className="no-result">Tidak ada destinasi cocok.</p>}
           {shown < filtered.length && (
             <button className="load-more" onClick={() => setShown(shown + PAGE)}>
-              Muat Lebih Banyak ({filtered.length - shown} lagi) ⌄
+              Muat {Math.min(PAGE, filtered.length - shown)} lagi
+              <Icon name="chevronDown" size={16} />
             </button>
           )}
         </section>

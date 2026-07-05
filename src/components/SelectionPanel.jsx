@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useSelection } from '../context/SelectionContext.jsx'
 import { groupOf } from '../lib/categories.js'
+import Icon from './Icon.jsx'
 
 export default function SelectionPanel({ venues }) {
   const { selected, toggle, clear } = useSelection()
@@ -20,8 +21,8 @@ export default function SelectionPanel({ venues }) {
           const g = groupOf(v.venue_category)
           return (
             <div key={v.venue_id} className="selection-item">
-              <span className="selection-thumb" style={{ background: g.gradient }}>
-                {g.icon}
+              <span className="selection-thumb" style={{ color: g.tint }}>
+                <Icon name={g.icon} size={22} />
               </span>
               <span className="selection-info">
                 <b>{v.name}</b>
@@ -30,16 +31,20 @@ export default function SelectionPanel({ venues }) {
                 </small>
               </span>
               <button className="selection-remove" title="Hapus"
-                onClick={() => toggle(v.venue_id)}>✕</button>
+                onClick={() => toggle(v.venue_id)}>
+                <Icon name="close" size={15} />
+              </button>
             </div>
           )
         })}
-        <div className="selection-hint">📍 Tambahkan destinasi dari daftar</div>
+        <div className="selection-hint">
+          <Icon name="plus" size={15} /> Tambahkan destinasi dari daftar
+        </div>
       </div>
 
       <button className="selection-cta" disabled={items.length < 2}
         onClick={() => navigate('/rencana?mode=manual')}>
-        Dapatkan Rekomendasi Rute →
+        Susun Rute dari {items.length} destinasi →
       </button>
       {items.length > 0 && (
         <button className="selection-clear" onClick={clear}>Kosongkan pilihan</button>

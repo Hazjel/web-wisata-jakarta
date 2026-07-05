@@ -1,42 +1,36 @@
 // Pemetaan venue_category dataset -> grup kategori tampilan + visual placeholder
 // (tidak ada foto venue di dataset — kartu pakai gradien + ikon per grup)
 
+// icon = nama ikon SVG (lihat components/Icon.jsx). tint = warna aksen kategori
+// (untuk chip & fallback monokrom, bukan gradien warna-warni ala AI).
 const GROUPS = [
   {
-    id: 'budaya', label: 'Budaya & Sejarah', icon: '🏛️',
-    gradient: 'linear-gradient(135deg, #003b72, #1d5fa8)',
+    id: 'budaya', label: 'Budaya & Sejarah', icon: 'landmark', tint: '#003b72',
     match: ['Museum', 'History Museum', 'Art Museum', 'Art Gallery',
       'Science Museum', 'Monument / Landmark', 'Historic Site'],
   },
   {
-    id: 'religi', label: 'Religi', icon: '🕌',
-    gradient: 'linear-gradient(135deg, #004150, #005a6d)',
+    id: 'religi', label: 'Religi', icon: 'temple', tint: '#005a6d',
     match: ['Temple', 'Buddhist Temple', 'Mosque', 'Church', 'Spiritual Center'],
   },
   {
-    id: 'alam', label: 'Alam & Taman', icon: '🌳',
-    gradient: 'linear-gradient(135deg, #14532d, #16a34a)',
+    id: 'alam', label: 'Alam & Taman', icon: 'tree', tint: '#15803d',
     match: ['Park', 'Garden', 'Lake', 'Nature / Park', 'Scenic Lookout',
       'Sculpture Garden', 'Beach'],
   },
   {
-    id: 'hiburan', label: 'Hiburan & Keluarga', icon: '🎡',
-    gradient: 'linear-gradient(135deg, #994700, #fb7800)',
+    id: 'hiburan', label: 'Hiburan & Keluarga', icon: 'ferris', tint: '#994700',
     match: ['Zoo', 'Aquarium', 'Theme Park', 'Water Park', 'Amusement Park',
       'Theme Park Ride / Attraction', 'Playground', 'Skating Rink',
       'General Entertainment'],
   },
   {
-    id: 'seni', label: 'Seni & Pertunjukan', icon: '🎭',
-    gradient: 'linear-gradient(135deg, #581c87, #9333ea)',
+    id: 'seni', label: 'Seni & Pertunjukan', icon: 'masks', tint: '#7e22ce',
     match: ['Theater', 'Performing Arts Venue', 'Concert Hall', 'Movie Theater'],
   },
 ]
 
-const FALLBACK = {
-  id: 'lainnya', label: 'Lainnya', icon: '📍',
-  gradient: 'linear-gradient(135deg, #424751, #727782)',
-}
+const FALLBACK = { id: 'lainnya', label: 'Lainnya', icon: 'pin', tint: '#424751' }
 
 export const CATEGORY_GROUPS = [...GROUPS, FALLBACK]
 

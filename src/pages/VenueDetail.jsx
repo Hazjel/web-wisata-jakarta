@@ -4,6 +4,7 @@ import { MapContainer, Marker, TileLayer, Tooltip } from 'react-leaflet'
 import { fetchVenueDetail, venuePhotoUrl } from '../api.js'
 import { useSelection } from '../context/SelectionContext.jsx'
 import { groupOf, PRICE_LABEL } from '../lib/categories.js'
+import Icon from '../components/Icon.jsx'
 
 const DAY_ORDER = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu']
 
@@ -59,7 +60,8 @@ export default function VenueDetail() {
           </div>
           <button className={`vd-add ${isSelected ? 'added' : ''}`}
             onClick={() => toggle(venue.venue_id)}>
-            {isSelected ? '✓ Dalam Rute' : '⊕ Tambah ke Rute'}
+            <Icon name={isSelected ? 'check' : 'plus'} size={18} strokeWidth={2.25} />
+            {isSelected ? 'Dalam Rute' : 'Tambah ke Rute'}
           </button>
         </div>
       </header>
@@ -77,7 +79,9 @@ export default function VenueDetail() {
           <section className="vd-section">
             <h2>Info & Ulasan</h2>
             <div className="vd-factcard">
-              <span className="vd-factcard-icon">{g.icon}</span>
+              <span className="vd-factcard-icon" style={{ color: g.tint }}>
+                <Icon name={g.icon} size={26} />
+              </span>
               <div>
                 <p>
                   <b>{venue.name}</b> termasuk kategori <b>{venue.venue_category}</b>
@@ -110,7 +114,7 @@ export default function VenueDetail() {
         {/* Sidebar (4) */}
         <aside className="vd-aside">
           <div className="vd-card">
-            <h3>ⓘ Info Singkat</h3>
+            <h3><Icon name="info" size={19} /> Info Singkat</h3>
             <dl className="vd-facts">
               <div><dt>Kategori</dt><dd>{venue.venue_category}</dd></div>
               {venue.google_rating &&
@@ -122,7 +126,7 @@ export default function VenueDetail() {
           </div>
 
           <div className="vd-card vd-card-visit">
-            <h3>🕒 Kunjungan</h3>
+            <h3><Icon name="clock" size={19} /> Kunjungan</h3>
             <div className="vd-visit-block">
               <span className="vd-visit-label">JAM OPERASIONAL</span>
               {jamHari.map((h) => (
