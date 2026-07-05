@@ -1,17 +1,20 @@
 import { useState } from 'react'
+import { useSelection } from '../context/SelectionContext.jsx'
 import VenuePicker from './VenuePicker.jsx'
 
 const DAYS = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu']
 
-export default function TripForm({ hotels, venues, loading, onSubmit }) {
-  const [mode, setMode] = useState('otomatis')
+export default function TripForm({ hotels, venues, loading, onSubmit,
+                                   initialMode = 'otomatis' }) {
+  // venue terpilih dibagikan dgn halaman Home/Detail via context
+  const { selected: selectedVenues, setSelected: setSelectedVenues } = useSelection()
+  const [mode, setMode] = useState(initialMode)
   const [preference, setPreference] = useState('museum sejarah budaya')
   const [budget, setBudget] = useState('menengah')
   const [nDays, setNDays] = useState(2)
   const [startDay, setStartDay] = useState('Sabtu')
   const [hotelId, setHotelId] = useState('')
   const [hotelSearch, setHotelSearch] = useState('')
-  const [selectedVenues, setSelectedVenues] = useState([])
   const [error, setError] = useState('')
 
   const hotelOptions = hotels

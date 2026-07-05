@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import './App.css'
-import { fetchHotels, fetchVenues, requestItinerary } from './api.js'
-import ItineraryMap from './components/ItineraryMap.jsx'
-import ItineraryResult from './components/ItineraryResult.jsx'
-import TripForm from './components/TripForm.jsx'
+import { fetchHotels, fetchVenues } from './api.js'
+import Footer from './components/Footer.jsx'
+import TopNav from './components/TopNav.jsx'
+import { SelectionProvider } from './context/SelectionContext.jsx'
+import Home from './pages/Home.jsx'
+import Planner from './pages/Planner.jsx'
+import VenueDetail from './pages/VenueDetail.jsx'
 
 export default function App() {
   const [hotels, setHotels] = useState([])
   const [venues, setVenues] = useState([])
-  const [itinerary, setItinerary] = useState(null)
-  const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
   useEffect(() => {
@@ -19,52 +21,25 @@ export default function App() {
         'Gagal terhubung ke backend. Jalankan dulu: uvicorn src.api.api:app --reload'))
   }, [])
 
-  async function handleSubmit(body) {
-    setLoading(true)
-    setError('')
-    try {
-      setItinerary(await requestItinerary(body))
-    } catch (e) {
-      setError(e.message)
-    } finally {
-      setLoading(false)
-    }
-  }
-
   return (
-    <div className="app-shell">
-      <header className="topbar">
-        <h1 className="brand">
-          Jakarta Routes <span className="brand-badge">HUMIC Research</span>
-        </h1>
-        <p className="tagline">
-          Itinerary multi-hari — Content-Based Filtering + optimasi rute GA/PSO
-        </p>
-      </header>
-
-      <div className="layout">
-        <aside className="sidebar">
-          <TripForm hotels={hotels} venues={venues} loading={loading}
-            onSubmit={handleSubmit} />
-          {error && <p className="error">{error}</p>}
-        </aside>
-
-        <main className="content">
-          {itinerary ? (
-            <>
-              <ItineraryMap data={itinerary} />
-              <ItineraryResult data={itinerary} />
-            </>
-          ) : (
-            <div className="placeholder">
-              <p>Isi form di kiri lalu klik <b>Rekomendasikan</b>.</p>
-              <p>Mode <b>otomatis</b>: sistem memilih venue dari preferensimu (CBF + MMR).</p>
-              <p>Mode <b>manual</b>: centang sendiri venue yang ingin dikunjungi —
-                sistem menyusun urutan & pembagian harinya.</p>
-            </div>
-          )}
-        </main>
-      </div>
-    </div>
+    <BrowserRouter>
+      <SelectionProvider>
+        <div className="app-shell">
+          <TopNav />
+          {error && <p className="error global-error">{error}</p>}
+          <div className="page">
+            <Routes>
+              <Route path="/" element={<Home venues={venues} />} />
+              <Route path="/destinasi" element={<Navigate to="/" replace />} />
+              <Route path="/venue/:id" element={<VenueDetail />} />
+              <Route path="/rencana"
+                element={<Planner hotels={hotels} venues={venues} />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </div>
+          <Footer />
+        </div>
+      </SelectionProvider>
+    </BrowserRouter>
   )
 }

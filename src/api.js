@@ -7,6 +7,7 @@ async function get(path) {
 }
 
 export const fetchVenues = () => get('/venues')
+export const fetchVenueDetail = (id) => get(`/venues/${id}`)
 export const fetchHotels = () => get('/hotels')
 
 export async function requestItinerary(body) {
