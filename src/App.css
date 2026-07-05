@@ -267,13 +267,16 @@
   overflow: hidden; background: var(--jakarta-night);
   color: #f9f9ff; text-align: center;
 }
-.hero-slides { position: absolute; inset: 0; }
-/* Ken Burns pan diletakkan di WRAPPER (opacity di IMG) supaya saat slide
-   keluar, transform tidak ikut ter-reset kasar — fade-out murni opacity. */
+/* Latar hitam di belakang slide supaya saat cross-fade tidak pernah ada
+   celah gelap "berkedip" (bg .hero sudah gelap, tapi tegaskan di sini). */
+.hero-slides { position: absolute; inset: 0; background: var(--jakarta-night); }
+/* Cross-fade tumpuk: slide aktif opacity PENUH menutupi slide di bawahnya;
+   slide keluar hanya fade opacity (pan di img tidak ikut ter-reset). Gelap
+   hero datang dari .hero-overlay, bukan dari gap antar-slide. */
 .hero-bg {
   position: absolute; inset: 0;
   opacity: 0; z-index: 0;
-  transition: opacity 1.8s ease-in-out;
+  transition: opacity 2s ease-in-out;
   will-change: opacity;
 }
 .hero-bg img {
@@ -282,10 +285,8 @@
   backface-visibility: hidden;
 }
 .hero-bg.active {
-  opacity: 0.62; z-index: 1;
+  opacity: 1; z-index: 1;
 }
-/* pan hanya pada IMG slide aktif; slide non-aktif img diam di scale statis
-   sehingga fade-out tidak pernah melompat posisi. */
 .hero-bg.active img {
   animation: heroPan 8.8s linear both;
 }
@@ -294,13 +295,17 @@
   to   { transform: scale(1.12) translateX(-3.5%); }
 }
 .hero-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(to top,
-    var(--jakarta-night) 0%, rgba(16, 24, 32, 0) 50%, rgba(16, 24, 32, 0.4) 100%);
+  position: absolute; inset: 0; z-index: 2;
+  /* peredupan foto pindah ke sini (slide kini opacity penuh) — lapisan gelap
+     rata + gradien atas/bawah supaya teks hero tetap terbaca */
+  background:
+    linear-gradient(to top,
+      var(--jakarta-night) 0%, rgba(16, 24, 32, 0.15) 50%, rgba(16, 24, 32, 0.55) 100%),
+    rgba(16, 24, 32, 0.32);
 }
 /* hero editorial — rata kiri, bukan center */
 .hero-inner {
-  position: relative; z-index: 1;
+  position: relative; z-index: 3;
   max-width: var(--container-max); width: 100%; margin: 0 auto;
   padding: 0 var(--sp-5); text-align: left;
 }
@@ -317,6 +322,7 @@
   border-radius: var(--rounded); /* kurang 'pill sempurna', lebih tegas */
 }
 .hero-caption {
+  z-index: 3;
   position: absolute; right: var(--sp-5); bottom: 26px; z-index: 1;
   display: inline-flex; align-items: center; gap: 5px;
   font-size: 13px; font-weight: 500; color: rgba(249, 249, 255, 0.85);
@@ -324,6 +330,7 @@
   padding: 5px 14px; border-radius: var(--rounded-full);
 }
 .hero-dots {
+  z-index: 3;
   position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%);
   z-index: 1; display: flex; gap: 8px;
 }
