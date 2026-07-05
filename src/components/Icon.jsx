@@ -19,6 +19,10 @@ const PATHS = {
   route: <><circle cx="6" cy="19" r="2" /><circle cx="18" cy="5" r="2" /><path d="M8 19h6a4 4 0 0 0 0-8H10a4 4 0 0 1 0-8h6" /></>,
   info: <><circle cx="12" cy="12" r="9" /><line x1="12" y1="11" x2="12" y2="16" /><line x1="12" y1="8" x2="12" y2="8" /></>,
   chevronDown: <polyline points="6 9 12 15 18 9" />,
+  chevronUp: <polyline points="6 15 12 9 18 15" />,
+  menu: <><line x1="4" y1="6" x2="20" y2="6" /><line x1="4" y1="12" x2="20" y2="12" /><line x1="4" y1="18" x2="20" y2="18" /></>,
+  map: <><path d="M9 3 3 5v16l6-2 6 2 6-2V3l-6 2-6-2Z" /><line x1="9" y1="3" x2="9" y2="19" /><line x1="15" y1="5" x2="15" y2="21" /></>,
+  list: <><line x1="8" y1="6" x2="20" y2="6" /><line x1="8" y1="12" x2="20" y2="12" /><line x1="8" y1="18" x2="20" y2="18" /><line x1="4" y1="6" x2="4" y2="6" /><line x1="4" y1="12" x2="4" y2="12" /><line x1="4" y1="18" x2="4" y2="18" /></>,
 }
 
 export default function Icon({ name, size = 24, strokeWidth = 1.75, className }) {
