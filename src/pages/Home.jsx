@@ -26,8 +26,9 @@ export default function Home({ venues }) {
   const [slide, setSlide] = useState(0)
 
   useEffect(() => {
-    // 7s per slide: cukup untuk fade 1.6s + pan penuh tanpa terasa berhenti
-    const t = setInterval(() => setSlide((s) => (s + 1) % HERO_SLIDES.length), 7000)
+    // 8s per slide: fade-out 1.8s tuntas sebelum ganti; pan 8.8s > 8s agar
+    // gerakan tidak pernah berhenti mendadak
+    const t = setInterval(() => setSlide((s) => (s + 1) % HERO_SLIDES.length), 8000)
     return () => clearInterval(t)
   }, [])
 
@@ -44,8 +45,9 @@ export default function Home({ venues }) {
       <header className="hero">
         <div className="hero-slides">
           {HERO_SLIDES.map((s, i) => (
-            <img key={s.label} className={`hero-bg ${i === slide ? 'active' : ''}`}
-              src={s.img} alt={s.label} loading={i === 0 ? 'eager' : 'lazy'} />
+            <div key={s.label} className={`hero-bg ${i === slide ? 'active' : ''}`}>
+              <img src={s.img} alt={s.label} loading={i === 0 ? 'eager' : 'lazy'} />
+            </div>
           ))}
         </div>
         <div className="hero-overlay" />
