@@ -281,20 +281,20 @@
 }
 .hero-bg img {
   width: 100%; height: 100%; object-fit: cover;
-  /* transform DASAR = titik AKHIR pan. Saat slide kehilangan .active dan
-     animasi dilepas, img tetap di posisi ini (tidak lompat/"kaget"). */
-  transform: scale(1.12) translateX(-3.5%);
   backface-visibility: hidden;
+  /* Pan via TRANSITION (bukan @keyframes) supaya tidak pernah di-restart /
+     dicabut mendadak oleh re-render React. Slide non-aktif: posisi awal pan. */
+  transform: scale(1.12) translateX(3.5%);
+  transition: transform 9s linear;
 }
 .hero-bg.active {
   opacity: 1; z-index: 1;
 }
+/* Slide aktif: img meluncur ke titik akhir. Saat slide berikutnya jadi aktif,
+   slide ini kehilangan .active -> transform kembali ke awal, tapi PELAN (9s
+   transition yang sama) dan tertutup fade-out, jadi tidak ada 'kaget'. */
 .hero-bg.active img {
-  animation: heroPan 8.8s linear both;
-}
-@keyframes heroPan {
-  from { transform: scale(1.12) translateX(3.5%); }
-  to   { transform: scale(1.12) translateX(-3.5%); }
+  transform: scale(1.12) translateX(-3.5%);
 }
 .hero-overlay {
   position: absolute; inset: 0; z-index: 2;
@@ -346,8 +346,9 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .hero-bg { transition: opacity 0.6s; }
-  .hero-bg img { transform: scale(1.05); }
-  .hero-bg.active img { animation: none; }
+  .hero-bg img, .hero-bg.active img {
+    transform: scale(1.05); transition: none;
+  }
 }
 .hero h1 {
   font-size: 48px; font-weight: 700; line-height: 1.2;

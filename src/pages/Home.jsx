@@ -46,7 +46,9 @@ export default function Home({ venues }) {
         <div className="hero-slides">
           {HERO_SLIDES.map((s, i) => (
             <div key={s.label} className={`hero-bg ${i === slide ? 'active' : ''}`}>
-              <img src={s.img} alt={s.label} loading={i === 0 ? 'eager' : 'lazy'} />
+              {/* eager: semua 5 foto di-preload supaya tidak 'muncul mendadak'
+                  saat slide berganti (lazy dulu bikin transisi kaget) */}
+              <img src={s.img} alt={s.label} loading="eager" />
             </div>
           ))}
         </div>
