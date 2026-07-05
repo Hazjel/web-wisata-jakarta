@@ -25,10 +25,14 @@ export default function App() {
   return (
     <BrowserRouter>
       <SelectionProvider>
-        <div className="app-shell">
+        <div className="flex min-h-screen flex-col">
           <TopNav />
-          {error && <p className="error global-error">{error}</p>}
-          <div className="page">
+          {error && (
+            <p className="mx-auto mt-4 w-full max-w-[1280px] rounded-lg bg-error-container px-3 py-2.5 text-sm text-on-error-container">
+              {error}
+            </p>
+          )}
+          <div className="flex-1">
             <Routes>
               <Route path="/" element={<Home venues={venues} />} />
               <Route path="/destinasi" element={<Destinations venues={venues} />} />

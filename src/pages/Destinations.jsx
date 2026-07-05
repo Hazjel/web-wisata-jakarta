@@ -8,6 +8,18 @@ import { venuePhotoUrl } from '../api.js'
 
 const JAKARTA_CENTER = [-6.21, 106.845]
 
+const pill = (active) =>
+  `inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-full border px-4 py-2.5 md:py-[7px]
+   text-xs font-semibold transition ${active
+    ? 'border-primary bg-primary-fixed text-primary'
+    : 'border-outline-variant bg-white text-on-surface-variant hover:bg-surface-gray'}`
+
+const tabBtn = (active) =>
+  `flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-lg border px-3 py-3
+   text-sm font-semibold transition ${active
+    ? 'border-primary bg-primary text-white'
+    : 'border-outline-variant bg-white text-on-surface-variant'}`
+
 export default function Destinations({ venues }) {
   const [filter, setFilter] = useState('semua')
   const [search, setSearch] = useState('')
@@ -22,39 +34,45 @@ export default function Destinations({ venues }) {
   }, [venues, filter, search])
 
   return (
-    <div className="dest-page">
-      <div className="dest-head">
-        <h2>Peta Destinasi</h2>
-        <p className="section-sub">
+    <div className="mx-auto flex max-w-[1280px] flex-col gap-4 p-4 md:px-10 md:pb-10 md:pt-6">
+      <div>
+        <h2 className="mb-1 text-[26px] md:text-[40px]">Peta Destinasi</h2>
+        <p className="mb-4 text-on-surface-variant">
           {filtered.length} tempat di Jakarta — klik titik di peta untuk melihat detailnya.
         </p>
-        <div className="filter-row">
-          <span className="filter-search-wrap">
-            <Icon name="search" size={17} className="filter-search-icon" />
-            <input className="filter-search" placeholder="Cari nama destinasi…"
-              value={search} onChange={(e) => setSearch(e.target.value)} />
-          </span>
+        <div className="relative mb-4 block">
+          <Icon name="search" size={17}
+            className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-outline" />
+          <input
+            className="w-full rounded-lg border border-outline-variant py-2.5 pl-10 pr-3.5 text-[15px]
+                       outline-none focus:border-tertiary-container focus:ring-[3px] focus:ring-tertiary-fixed"
+            placeholder="Cari nama destinasi…"
+            value={search} onChange={(e) => setSearch(e.target.value)} />
         </div>
-        <div className="filter-pills">
-          <button className={filter === 'semua' ? 'active' : ''}
+        <div className="filter-pills flex gap-2 overflow-x-auto pb-1.5 md:flex-wrap md:overflow-visible">
+          <button className={pill(filter === 'semua')}
             onClick={() => setFilter('semua')}>Semua</button>
           {CATEGORY_GROUPS.map((g) => (
-            <button key={g.id} className={filter === g.id ? 'active' : ''}
+            <button key={g.id} className={pill(filter === g.id)}
               onClick={() => setFilter(g.id)}>
               <Icon name={g.icon} size={15} /> {g.label}
             </button>
           ))}
         </div>
-        <div className="dest-tabs">
-          <button className={tab === 'peta' ? 'active' : ''}
-            onClick={() => setTab('peta')}><Icon name="map" size={16} /> Peta</button>
-          <button className={tab === 'daftar' ? 'active' : ''}
-            onClick={() => setTab('daftar')}><Icon name="list" size={16} /> Daftar</button>
+        <div className="mt-3 flex gap-2 md:hidden">
+          <button className={tabBtn(tab === 'peta')} onClick={() => setTab('peta')}>
+            <Icon name="map" size={16} /> Peta
+          </button>
+          <button className={tabBtn(tab === 'daftar')} onClick={() => setTab('daftar')}>
+            <Icon name="list" size={16} /> Daftar
+          </button>
         </div>
       </div>
 
-      <div className={`dest-body tab-${tab}`}>
-        <div className="dest-map">
+      <div className="grid min-h-0 grid-cols-1 gap-6 md:min-h-[60vh] md:grid-cols-2 lg:grid-cols-[3fr_2fr]">
+        <div className={`overflow-hidden rounded-2xl border border-border-subtle
+            h-[60vh] md:sticky md:top-20 md:h-[calc(100vh-120px)]
+            ${tab === 'daftar' ? 'hidden md:block' : ''}`}>
           <MapContainer center={JAKARTA_CENTER} zoom={11} className="map"
             style={{ height: '100%' }}>
             <TileLayer
@@ -69,13 +87,15 @@ export default function Destinations({ venues }) {
                   pathOptions={{ color: '#fff', weight: 1.5,
                     fillColor: g.tint, fillOpacity: 0.9 }}>
                   <Popup>
-                    <div className="map-pop">
+                    <div className="flex min-w-[180px] flex-col gap-1">
                       {v.has_photo && (
-                        <img src={venuePhotoUrl(v.venue_id, 400)} alt={v.name} />
+                        <img className="h-[90px] w-full rounded object-cover"
+                          src={venuePhotoUrl(v.venue_id, 400)} alt={v.name} />
                       )}
-                      <b>{v.name}</b>
-                      <small>{g.label} · ⭐ {v.google_rating || '–'}</small>
-                      <Link to={`/venue/${v.venue_id}`}>Lihat detail →</Link>
+                      <b className="text-sm">{v.name}</b>
+                      <small className="text-outline">{g.label} · ⭐ {v.google_rating || '–'}</small>
+                      <Link className="text-[13px] font-semibold text-primary"
+                        to={`/venue/${v.venue_id}`}>Lihat detail →</Link>
                     </div>
                   </Popup>
                 </CircleMarker>
@@ -84,9 +104,11 @@ export default function Destinations({ venues }) {
           </MapContainer>
         </div>
 
-        <div className="dest-list">
+        <div className={`grid content-start grid-cols-1 gap-4
+            ${tab === 'peta' ? 'hidden md:grid' : 'grid'}`}>
           {filtered.map((v) => <VenueCard key={v.venue_id} venue={v} />)}
-          {filtered.length === 0 && <p className="no-result">Tidak ada destinasi cocok.</p>}
+          {filtered.length === 0 &&
+            <p className="py-6 text-on-surface-variant">Tidak ada destinasi cocok.</p>}
         </div>
       </div>
     </div>

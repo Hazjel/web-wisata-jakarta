@@ -46,6 +46,10 @@ function paramsToBody(p) {
   }
 }
 
+const actionBtn = `inline-flex cursor-pointer items-center gap-1.5 rounded-full border-[1.5px]
+  border-outline-variant bg-white px-4 py-2 text-[13px] font-semibold text-primary
+  transition hover:border-primary hover:bg-primary-fixed`
+
 export default function Planner({ hotels, venues }) {
   const [params, setParams] = useSearchParams()
   const { setSelected } = useSelection()
@@ -110,39 +114,40 @@ export default function Planner({ hotels, venues }) {
     })
   }
 
-  function loadHistory(h) {
-    window.location.href = `/rencana?${h.qs}`
-  }
-
   const initial = paramsToBody(params)
 
   return (
-    <div className="layout">
-      <aside className="sidebar">
+    <div className="mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-6 p-4 md:grid-cols-[360px_1fr] lg:grid-cols-[400px_1fr] md:p-6 print:block print:max-w-none print:p-0">
+      <aside className="min-w-0">
         <TripForm hotels={hotels} venues={venues} loading={loading}
           initialMode={params.get('mode') === 'manual' ? 'manual' : 'otomatis'}
           initialValues={initial}
           onSubmit={handleSubmit} />
-        {error && <p className="error">{error}</p>}
+        {error && (
+          <p className="mt-3 rounded-lg bg-error-container px-3 py-2.5 text-sm text-on-error-container">
+            {error}
+          </p>
+        )}
       </aside>
 
-      <main className="content">
+      <main className="flex min-w-0 flex-col gap-6 print:block">
         {loading ? (
-          <div className="planner-loading">
-            <span className="planner-loading-icon"><Icon name="route" size={40} /></span>
-            <p className="planner-loading-stage">{STAGES[stage]}</p>
-            <div className="planner-loading-bar">
-              <span style={{ width: `${((stage + 1) / STAGES.length) * 100}%` }} />
+          <div className="flex flex-col items-center gap-4 rounded-2xl border border-border-subtle bg-surface-gray p-10 text-center">
+            <span className="planner-loading-icon text-primary"><Icon name="route" size={40} /></span>
+            <p className="m-0 font-semibold text-on-surface-variant">{STAGES[stage]}</p>
+            <div className="h-1.5 w-[min(320px,80%)] overflow-hidden rounded-full bg-surface-high">
+              <span className="block h-full rounded-full bg-secondary-container transition-[width] duration-700 ease-out"
+                style={{ width: `${((stage + 1) / STAGES.length) * 100}%` }} />
             </div>
           </div>
         ) : itinerary ? (
           <>
-            <div className="result-actions">
-              <button onClick={copyLink}>
+            <div className="flex flex-wrap gap-2 print:hidden">
+              <button className={actionBtn} onClick={copyLink}>
                 <Icon name="route" size={15} />
                 {copied ? 'Tautan tersalin ✓' : 'Salin tautan rencana'}
               </button>
-              <button onClick={() => window.print()}>
+              <button className={actionBtn} onClick={() => window.print()}>
                 <Icon name="list" size={15} /> Cetak / simpan PDF
               </button>
             </div>
@@ -151,7 +156,7 @@ export default function Planner({ hotels, venues }) {
           </>
         ) : (
           <>
-            <div className="placeholder">
+            <div className="rounded-2xl border border-border-subtle bg-surface-gray p-10 leading-7 text-on-surface-variant [&_b]:text-primary">
               <p>Isi form di kiri lalu klik <b>Rekomendasikan</b>.</p>
               <p>Mode <b>otomatis</b>: tulis apa yang kamu suka — museum, taman,
                 pantai — dan kami pilihkan tempat terbaiknya.</p>
@@ -159,13 +164,16 @@ export default function Planner({ hotels, venues }) {
                 kunjungi — kami susun urutan, pembagian hari, dan jamnya.</p>
             </div>
             {history.length > 0 && (
-              <div className="plan-history">
-                <h3>Rencana sebelumnya</h3>
+              <div className="rounded-2xl border border-border-subtle bg-surface-gray p-6">
+                <h3 className="mb-2 text-[17px]">Rencana sebelumnya</h3>
                 {history.map((h) => (
-                  <button key={h.ts} className="plan-history-item"
-                    onClick={() => loadHistory(h)}>
-                    <b>{h.label}</b>
-                    <small>{h.summary} · {new Date(h.ts).toLocaleDateString('id')}</small>
+                  <button key={h.ts}
+                    onClick={() => { window.location.href = `/rencana?${h.qs}` }}
+                    className="mt-1.5 flex w-full cursor-pointer flex-col items-start gap-0.5 rounded-lg border border-border-subtle bg-white px-3 py-2.5 text-left transition hover:border-primary">
+                    <b className="text-sm text-on-surface">{h.label}</b>
+                    <small className="text-xs text-outline">
+                      {h.summary} · {new Date(h.ts).toLocaleDateString('id')}
+                    </small>
                   </button>
                 ))}
               </div>

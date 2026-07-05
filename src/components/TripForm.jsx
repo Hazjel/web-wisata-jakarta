@@ -4,6 +4,14 @@ import VenuePicker from './VenuePicker.jsx'
 
 const DAYS = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu']
 
+const label = 'flex flex-col gap-1.5 text-sm font-semibold text-on-surface-variant'
+const input = `rounded-lg border border-outline-variant bg-white px-3 py-2.5 text-[15px] font-normal
+  text-night outline-none focus:border-tertiary-container focus:ring-[3px] focus:ring-tertiary-fixed`
+const modeBtn = (active) =>
+  `cursor-pointer rounded-lg border p-2.5 text-[13px] transition hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)] ${
+    active ? 'border-primary bg-primary font-semibold text-white'
+           : 'border-outline-variant bg-white font-medium text-on-surface-variant'}`
+
 export default function TripForm({ hotels, venues, loading, onSubmit,
                                    initialMode = 'otomatis',
                                    initialValues = {} }) {
@@ -49,25 +57,26 @@ export default function TripForm({ hotels, venues, loading, onSubmit,
   }
 
   return (
-    <form className="trip-form" onSubmit={submit}>
-      <h2>Rencanakan Perjalanan</h2>
+    <form onSubmit={submit}
+      className="flex flex-col gap-4 rounded-2xl border border-border-subtle bg-surface-gray p-6 print:hidden">
+      <h2 className="text-xl">Rencanakan Perjalanan</h2>
 
-      <div className="mode-toggle">
-        <button type="button"
-          className={mode === 'otomatis' ? 'active' : ''}
+      <div className="grid grid-cols-2 gap-2">
+        <button type="button" className={modeBtn(mode === 'otomatis')}
           onClick={() => setMode('otomatis')}>
           Otomatis (preferensi)
         </button>
-        <button type="button"
-          className={mode === 'manual' ? 'active' : ''}
+        <button type="button" className={modeBtn(mode === 'manual')}
           onClick={() => setMode('manual')}>
           Pilih venue manual
         </button>
       </div>
 
-      <label>
-        Preferensi {mode === 'manual' && <small>(opsional di mode manual)</small>}
-        <input value={preference} onChange={(e) => setPreference(e.target.value)}
+      <label className={label}>
+        <span>Preferensi {mode === 'manual' &&
+          <small className="font-normal text-outline">(opsional di mode manual)</small>}</span>
+        <input className={input} value={preference}
+          onChange={(e) => setPreference(e.target.value)}
           placeholder="mis. museum sejarah budaya" />
       </label>
 
@@ -76,35 +85,36 @@ export default function TripForm({ hotels, venues, loading, onSubmit,
           onChange={setSelectedVenues} />
       )}
 
-      <div className="form-row">
-        <label>
+      <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
+        <label className={label}>
           Budget
-          <select value={budget} onChange={(e) => setBudget(e.target.value)}>
+          <select className={input} value={budget} onChange={(e) => setBudget(e.target.value)}>
             <option value="hemat">Hemat</option>
             <option value="menengah">Menengah</option>
             <option value="bebas">Bebas</option>
           </select>
         </label>
-        <label>
+        <label className={label}>
           Jumlah hari
-          <select value={nDays} onChange={(e) => setNDays(e.target.value)}>
+          <select className={input} value={nDays} onChange={(e) => setNDays(e.target.value)}>
             {[1, 2, 3, 4, 5].map((n) => <option key={n} value={n}>{n}</option>)}
           </select>
         </label>
-        <label>
+        <label className={label}>
           Hari mulai
-          <select value={startDay} onChange={(e) => setStartDay(e.target.value)}>
+          <select className={input} value={startDay} onChange={(e) => setStartDay(e.target.value)}>
             {DAYS.map((d) => <option key={d} value={d}>{d}</option>)}
           </select>
         </label>
       </div>
 
-      <label>
+      <label className={label}>
         Hotel (titik berangkat/pulang)
-        <input value={hotelSearch} onChange={(e) => setHotelSearch(e.target.value)}
-          placeholder="cari hotel..." />
-        <small>{hotelOptions.length} hotel tersedia</small>
-        <select value={hotelId} onChange={(e) => setHotelId(e.target.value)} size="6">
+        <input className={input} value={hotelSearch}
+          onChange={(e) => setHotelSearch(e.target.value)} placeholder="cari hotel..." />
+        <small className="font-normal text-outline">{hotelOptions.length} hotel tersedia</small>
+        <select className={input} value={hotelId}
+          onChange={(e) => setHotelId(e.target.value)} size="6">
           <option value="">(default: pusat kota)</option>
           {hotelOptions.map((h) => (
             <option key={h.hotel_id} value={h.hotel_id}>
@@ -114,9 +124,14 @@ export default function TripForm({ hotels, venues, loading, onSubmit,
         </select>
       </label>
 
-      {error && <p className="error">{error}</p>}
+      {error && (
+        <p className="m-0 rounded-lg bg-error-container px-3 py-2.5 text-sm text-on-error-container">
+          {error}
+        </p>
+      )}
 
-      <button type="submit" className="submit" disabled={loading}>
+      <button type="submit" disabled={loading}
+        className="flex cursor-pointer items-center justify-center gap-2 rounded-lg bg-secondary-container p-3.5 text-base font-bold text-white transition hover:brightness-105 hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)] disabled:cursor-wait disabled:bg-outline-variant">
         {loading ? 'Menyusun itinerary…' : <>🔍 Rekomendasikan</>}
       </button>
     </form>

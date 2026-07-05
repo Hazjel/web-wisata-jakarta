@@ -1,64 +1,56 @@
-/* Design tokens — "Jakarta Routes" (lihat design.md) */
-:root {
+@import "tailwindcss";
+
+/* Design tokens — "Jakarta Routes" (design.md) sebagai Tailwind theme.
+   Pakai: bg-primary, text-on-surface-variant, border-border-subtle,
+   font-head, md:grid-cols-2, dst. */
+@theme {
+  /* breakpoint disamakan dgn desain lama */
+  --breakpoint-md: 720px;
+  --breakpoint-lg: 1024px;
+
   /* colors */
-  --primary: #003b72;
-  --on-primary: #ffffff;
-  --primary-container: #00529b;
-  --primary-fixed: #d5e3ff;
-  --secondary: #994700;
-  --secondary-container: #fb7800;
-  --on-secondary: #ffffff;
-  --secondary-fixed: #ffdbc8;
-  --tertiary-container: #005a6d;
-  --on-tertiary-container: #4bd5fa;
-  --tertiary-fixed: #b3ebff;
-  --error: #ba1a1a;
-  --error-container: #ffdad6;
-  --on-error-container: #93000a;
-  --surface: #ffffff;
-  --surface-gray: #f8fafc;
-  --border-subtle: #e2e8f0;
-  --outline: #727782;
-  --outline-variant: #c2c6d3;
-  --on-surface: #191c20;
-  --on-surface-variant: #424751;
-  --jakarta-night: #101820;
+  --color-primary: #003b72;
+  --color-primary-container: #00529b;
+  --color-primary-fixed: #d5e3ff;
+  --color-primary-fixed-dim: #a6c8ff;
+  --color-secondary: #994700;
+  --color-secondary-container: #fb7800;
+  --color-secondary-fixed: #ffdbc8;
+  --color-secondary-fixed-dim: #ffb68b;
+  --color-tertiary-container: #005a6d;
+  --color-tertiary-fixed: #b3ebff;
+  --color-night: #101820;
+  --color-surface: #ffffff;
+  --color-surface-gray: #f8fafc;
+  --color-surface-high: #e1e2e9;
+  --color-border-subtle: #e2e8f0;
+  --color-outline: #727782;
+  --color-outline-variant: #c2c6d3;
+  --color-on-surface: #191c20;
+  --color-on-surface-variant: #424751;
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+  --color-gold: #ffd700;
 
   /* typography */
   --font-head: 'Montserrat', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
-
-  /* shape */
-  --rounded-sm: 0.25rem;
-  --rounded: 0.5rem;
-  --rounded-md: 0.75rem;
-  --rounded-lg: 1rem;
-  --rounded-full: 9999px;
-
-  /* spacing: 8px rhythm */
-  --sp-1: 8px;
-  --sp-2: 16px;
-  --sp-3: 24px;
-  --sp-4: 32px;
-  --sp-5: 40px;
-  --container-max: 1280px;
-
-  /* elevation level 2 */
-  --shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.06);
 }
 
-* { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
-body {
-  font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1.6;
-  color: var(--on-surface);
-  background: var(--surface);
+@layer base {
+  body {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--color-on-surface);
+    background: var(--color-surface);
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-head);
+    letter-spacing: -0.02em;
+    color: var(--color-night);
+    font-weight: 700;
+  }
+  #root { min-height: 100vh; }
 }
-h1, h2, h3, h4 {
-  font-family: var(--font-head);
-  letter-spacing: -0.02em;
-  color: var(--jakarta-night);
-}
-#root { min-height: 100vh; }
