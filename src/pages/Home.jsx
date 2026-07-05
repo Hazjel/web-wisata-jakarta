@@ -26,7 +26,8 @@ export default function Home({ venues }) {
   const [slide, setSlide] = useState(0)
 
   useEffect(() => {
-    const t = setInterval(() => setSlide((s) => (s + 1) % HERO_SLIDES.length), 5000)
+    // 7s per slide: cukup untuk fade 1.6s + pan penuh tanpa terasa berhenti
+    const t = setInterval(() => setSlide((s) => (s + 1) % HERO_SLIDES.length), 7000)
     return () => clearInterval(t)
   }, [])
 

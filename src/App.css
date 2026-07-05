@@ -271,16 +271,21 @@
 .hero-bg {
   position: absolute; inset: 0; width: 100%; height: 100%;
   object-fit: cover; opacity: 0;
-  transition: opacity 1.2s ease-in-out;
+  transform: scale(1.12) translateX(3%);
+  transition: opacity 1.6s ease-in-out;
+  will-change: opacity, transform;
+  backface-visibility: hidden;   /* hindari flicker sub-pixel */
 }
-/* slide aktif: fade in + pan lambat ke kiri (Ken Burns) */
+/* slide aktif: fade in halus + pan pelan ke kiri sepanjang tampil (Ken Burns).
+   Durasi pan = interval slide (7s) supaya gerakan tidak berhenti mendadak
+   sebelum foto berganti. */
 .hero-bg.active {
-  opacity: 0.62;
-  animation: heroPan 6s ease-out forwards;
+  opacity: 0.62; z-index: 1;
+  animation: heroPan 7.4s linear both;
 }
 @keyframes heroPan {
-  from { transform: scale(1.08) translateX(2.5%); }
-  to   { transform: scale(1.08) translateX(-2.5%); }
+  from { transform: scale(1.12) translateX(3%); }
+  to   { transform: scale(1.12) translateX(-3%); }
 }
 .hero-overlay {
   position: absolute; inset: 0;
@@ -325,8 +330,8 @@
   background: var(--secondary-container); width: 24px;
 }
 @media (prefers-reduced-motion: reduce) {
+  .hero-bg { transition: opacity 0.6s; transform: scale(1.05); }
   .hero-bg.active { animation: none; transform: scale(1.05); }
-  .hero-bg { transition: opacity 0.4s; }
 }
 .hero h1 {
   font-size: 48px; font-weight: 700; line-height: 1.2;
