@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { MapContainer, TileLayer, Marker, Tooltip } from 'react-leaflet'
-import { fetchVenueDetail } from '../api.js'
+import { fetchVenueDetail, venuePhotoUrl } from '../api.js'
 import { useSelection } from '../context/SelectionContext.jsx'
 import { groupOf, PRICE_LABEL } from '../lib/categories.js'
 
@@ -27,7 +27,12 @@ export default function VenueDetail() {
       <Link to="/" className="back-link">← Kembali ke destinasi</Link>
 
       <header className="detail-hero" style={{ background: g.gradient }}>
-        <span className="detail-icon">{g.icon}</span>
+        {venue.has_photo ? (
+          <img className="detail-photo" alt={venue.name}
+            src={venuePhotoUrl(venue.venue_id, 800)} />
+        ) : (
+          <span className="detail-icon">{g.icon}</span>
+        )}
         <div>
           <span className="detail-group">{g.label} · {venue.venue_category}</span>
           <h1>{venue.name}</h1>

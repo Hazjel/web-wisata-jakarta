@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { venuePhotoUrl } from '../api.js'
 import { useSelection } from '../context/SelectionContext.jsx'
 import { groupOf, PRICE_LABEL } from '../lib/categories.js'
 
@@ -6,13 +8,22 @@ export default function VenueCard({ venue }) {
   const { selected, toggle } = useSelection()
   const g = groupOf(venue.venue_category)
   const isSelected = selected.includes(String(venue.venue_id))
+  const [imgOk, setImgOk] = useState(venue.has_photo)
 
   return (
     <div className={`venue-card ${isSelected ? 'selected' : ''}`}>
       <Link to={`/venue/${venue.venue_id}`} className="card-media"
         style={{ background: g.gradient }}>
-        <span className="card-icon">{g.icon}</span>
-        <span className="card-group">{g.label}</span>
+        {imgOk ? (
+          <img className="card-photo" loading="lazy" alt={venue.name}
+            src={venuePhotoUrl(venue.venue_id, 400)}
+            onError={() => setImgOk(false)} />
+        ) : (
+          <>
+            <span className="card-icon">{g.icon}</span>
+            <span className="card-group">{g.label}</span>
+          </>
+        )}
       </Link>
       <button
         className={`card-add ${isSelected ? 'added' : ''}`}

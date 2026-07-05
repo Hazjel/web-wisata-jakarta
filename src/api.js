@@ -10,6 +10,9 @@ export const fetchVenues = () => get('/venues')
 export const fetchVenueDetail = (id) => get(`/venues/${id}`)
 export const fetchHotels = () => get('/hotels')
 
+// URL foto venue (proxy backend; key server-side). w = lebar px.
+export const venuePhotoUrl = (id, w = 800) => `/api/venues/${id}/photo?w=${w}`
+
 export async function requestItinerary(body) {
   const r = await fetch('/api/itinerary', {
     method: 'POST',

@@ -335,6 +335,7 @@
   justify-content: center; gap: 6px; height: 150px;
   color: #fff; text-decoration: none;
 }
+.card-photo { width: 100%; height: 100%; object-fit: cover; }
 .card-icon { font-size: 44px; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3)); }
 .card-group {
   font-size: 12px; font-weight: 600; letter-spacing: 0.05em;
@@ -444,6 +445,11 @@
   color: #fff; flex-wrap: wrap;
 }
 .detail-icon { font-size: 64px; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.35)); }
+.detail-photo {
+  width: 200px; height: 140px; object-fit: cover;
+  border-radius: var(--rounded-md); flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
 .detail-hero > div { flex: 1; min-width: 240px; }
 .detail-group {
   font-size: 12px; font-weight: 600; letter-spacing: 0.05em;
