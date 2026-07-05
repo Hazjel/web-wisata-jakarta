@@ -5,15 +5,19 @@ import VenuePicker from './VenuePicker.jsx'
 const DAYS = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu']
 
 export default function TripForm({ hotels, venues, loading, onSubmit,
-                                   initialMode = 'otomatis' }) {
+                                   initialMode = 'otomatis',
+                                   initialValues = {} }) {
   // venue terpilih dibagikan dgn halaman Home/Detail via context
   const { selected: selectedVenues, setSelected: setSelectedVenues } = useSelection()
   const [mode, setMode] = useState(initialMode)
-  const [preference, setPreference] = useState('museum sejarah budaya')
-  const [budget, setBudget] = useState('menengah')
-  const [nDays, setNDays] = useState(2)
-  const [startDay, setStartDay] = useState('Sabtu')
-  const [hotelId, setHotelId] = useState('')
+  const [preference, setPreference] = useState(
+    initialValues.preference_text ?? 'museum sejarah budaya')
+  const [budget, setBudget] = useState(initialValues.budget ?? 'menengah')
+  const [nDays, setNDays] = useState(initialValues.n_days ?? 2)
+  const [startDay, setStartDay] = useState(initialValues.start_day ?? 'Sabtu')
+  const [hotelId, setHotelId] = useState(
+    initialValues.hotel_id !== null && initialValues.hotel_id !== undefined
+      ? String(initialValues.hotel_id) : '')
   const [hotelSearch, setHotelSearch] = useState('')
   const [error, setError] = useState('')
 
