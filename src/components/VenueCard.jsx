@@ -5,18 +5,18 @@ import { useSelection } from '../context/SelectionContext.jsx'
 import { groupOf, PRICE_LABEL } from '../lib/categories.js'
 import Icon from './Icon.jsx'
 
-export default function VenueCard({ venue, featured = false }) {
+export default function VenueCard({ venue }) {
   const { selected, toggle } = useSelection()
   const g = groupOf(venue.venue_category)
   const isSelected = selected.includes(String(venue.venue_id))
   const [imgOk, setImgOk] = useState(venue.has_photo)
 
   return (
-    <div className={`venue-card ${isSelected ? 'selected' : ''} ${featured ? 'featured' : ''}`}>
+    <div className={`venue-card ${isSelected ? 'selected' : ''}`}>
       <Link to={`/venue/${venue.venue_id}`} className="card-media">
         {imgOk ? (
           <img className="card-photo" loading="lazy" alt={venue.name}
-            src={venuePhotoUrl(venue.venue_id, featured ? 800 : 400)}
+            src={venuePhotoUrl(venue.venue_id, 400)}
             onError={() => setImgOk(false)} />
         ) : (
           <span className="card-placeholder" style={{ color: g.tint }}>

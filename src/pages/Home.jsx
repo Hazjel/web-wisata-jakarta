@@ -101,9 +101,8 @@ export default function Home({ venues }) {
           </div>
 
           <div className="venue-grid">
-            {filtered.slice(0, shown).map((v, i) => (
-              <VenueCard key={v.venue_id} venue={v}
-                featured={i === 0 && !search && filter === 'semua'} />
+            {filtered.slice(0, shown).map((v) => (
+              <VenueCard key={v.venue_id} venue={v} />
             ))}
           </div>
           {filtered.length === 0 && <p className="no-result">Tidak ada destinasi cocok.</p>}
