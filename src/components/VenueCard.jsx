@@ -35,15 +35,16 @@ export default function VenueCard({ venue }) {
         <Link to={`/venue/${venue.venue_id}`} className="card-title">
           {venue.name}
         </Link>
+        <span className="card-subtitle">{g.label}</span>
+        {venue.description_short && (
+          <p className="card-desc">{venue.description_short}…</p>
+        )}
         <div className="card-meta">
           <span>⭐ {venue.google_rating || '–'}</span>
           <span>{PRICE_LABEL[venue.price_level]}</span>
           {venue.time_spent_minutes &&
             <span>±{Math.round(venue.time_spent_minutes / 60 * 10) / 10} jam</span>}
         </div>
-        {venue.description_short && (
-          <p className="card-desc">{venue.description_short}…</p>
-        )}
       </div>
     </div>
   )

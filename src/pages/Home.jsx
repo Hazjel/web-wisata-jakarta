@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import heroImg from '../assets/hero-jakarta.jpg'
 import SelectionPanel from '../components/SelectionPanel.jsx'
 import VenueCard from '../components/VenueCard.jsx'
 import { CATEGORY_GROUPS, groupOf } from '../lib/categories.js'
@@ -21,10 +22,11 @@ export default function Home({ venues }) {
   return (
     <>
       <header className="hero">
+        <img className="hero-bg" src={heroImg} alt="Skyline Jakarta" />
+        <div className="hero-overlay" />
         <div className="hero-inner">
-          <h1>Jelajahi Jakarta dengan Rekomendasi Terbaik</h1>
-          <p>Temukan rute perjalanan unikmu di jantung Indonesia — {venues.length} destinasi
-            terkurasi, itinerary multi-hari disusun otomatis.</p>
+          <h1>Jelajahi Jakarta dengan<br />Rekomendasi Terbaik</h1>
+          <p>Temukan rute perjalanan unik Anda di jantung Indonesia.</p>
           <a href="#destinasi" className="hero-cta">Mulai Perjalanan Anda</a>
         </div>
       </header>
