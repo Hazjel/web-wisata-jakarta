@@ -89,6 +89,31 @@ export default function Home({ venues }) {
         </div>
       </header>
 
+      <section className="howit">
+        <h2>Cara kerjanya</h2>
+        <ol className="howit-steps">
+          <li>
+            <span className="howit-node">1</span>
+            <b>Pilih tempatmu</b>
+            <p>Centang destinasi yang menarik, atau cukup tulis seleramu —
+              "museum sejarah", "taman keluarga", apa saja.</p>
+          </li>
+          <li>
+            <span className="howit-node">2</span>
+            <b>Kami susun rutenya</b>
+            <p>Urutan kunjungan, pembagian hari, jam datang, sampai jeda makan
+              siang — dihitung supaya perjalananmu searah dan tidak ada tempat
+              yang kena jam tutup.</p>
+          </li>
+          <li>
+            <span className="howit-node">3</span>
+            <b>Berangkat</b>
+            <p>Dapatkan jadwal lengkap per hari plus peta rute jalannya —
+              tinggal ikuti.</p>
+          </li>
+        </ol>
+      </section>
+
       <div className="home-layout" id="destinasi">
         <section className="home-main">
           <div className="section-head">

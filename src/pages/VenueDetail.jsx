@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { MapContainer, Marker, TileLayer, Tooltip } from 'react-leaflet'
-import { fetchVenueDetail, venuePhotoUrl } from '../api.js'
+import { fetchSimilar, fetchVenueDetail, venuePhotoUrl } from '../api.js'
+import VenueCard from '../components/VenueCard.jsx'
 import { useSelection } from '../context/SelectionContext.jsx'
 import { groupOf, PRICE_LABEL } from '../lib/categories.js'
 import Icon from '../components/Icon.jsx'
@@ -24,13 +25,16 @@ export default function VenueDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
   const [venue, setVenue] = useState(null)
+  const [similar, setSimilar] = useState([])
   const [error, setError] = useState('')
   const { selected, toggle } = useSelection()
 
   useEffect(() => {
     setVenue(null)
+    setSimilar([])
     window.scrollTo(0, 0)
     fetchVenueDetail(id).then(setVenue).catch(() => setError('Venue tidak ditemukan'))
+    fetchSimilar(id).then(setSimilar).catch(() => {})
   }, [id])
 
   if (error) return <div className="detail-page"><p className="error">{error}</p></div>
@@ -163,6 +167,15 @@ export default function VenueDetail() {
           </button>
         </aside>
       </div>
+
+      {similar.length > 0 && (
+        <section className="vd-similar">
+          <h2>Kamu mungkin juga suka</h2>
+          <div className="venue-grid vd-similar-grid">
+            {similar.map((v) => <VenueCard key={v.venue_id} venue={v} />)}
+          </div>
+        </section>
+      )}
 
       <Link to="/" className="vd-back">← Kembali ke semua destinasi</Link>
     </article>

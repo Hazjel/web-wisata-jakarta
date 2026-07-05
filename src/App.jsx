@@ -5,6 +5,7 @@ import { fetchHotels, fetchVenues } from './api.js'
 import Footer from './components/Footer.jsx'
 import TopNav from './components/TopNav.jsx'
 import { SelectionProvider } from './context/SelectionContext.jsx'
+import Destinations from './pages/Destinations.jsx'
 import Home from './pages/Home.jsx'
 import Planner from './pages/Planner.jsx'
 import VenueDetail from './pages/VenueDetail.jsx'
@@ -30,7 +31,7 @@ export default function App() {
           <div className="page">
             <Routes>
               <Route path="/" element={<Home venues={venues} />} />
-              <Route path="/destinasi" element={<Navigate to="/" replace />} />
+              <Route path="/destinasi" element={<Destinations venues={venues} />} />
               <Route path="/venue/:id" element={<VenueDetail />} />
               <Route path="/rencana"
                 element={<Planner hotels={hotels} venues={venues} />} />

@@ -710,6 +710,73 @@
 
 /* ================= mobile ================= */
 
+/* ================= cara kerja (motif garis-rute) ================= */
+.howit {
+  max-width: var(--container-max); margin: 0 auto;
+  padding: var(--sp-5);
+}
+.howit h2 { font-size: 40px; margin: 0 0 var(--sp-4); }
+.howit-steps {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-4);
+  position: relative;
+}
+/* garis rute dashed horizontal antar langkah */
+.howit-steps::before {
+  content: ''; position: absolute; top: 21px; left: 12%; right: 12%;
+  border-top: 2px dashed var(--outline-variant);
+}
+.howit-steps li { position: relative; padding-top: 60px; }
+.howit-node {
+  position: absolute; top: 0; left: 0;
+  width: 44px; height: 44px; border-radius: var(--rounded-full);
+  display: flex; align-items: center; justify-content: center;
+  background: var(--primary); color: var(--on-primary);
+  font-family: var(--font-head); font-size: 18px; font-weight: 700;
+  box-shadow: 0 0 0 6px var(--surface);
+}
+.howit-steps li:last-child .howit-node { background: var(--secondary-container); }
+.howit-steps b { font-family: var(--font-head); font-size: 19px; }
+.howit-steps p { margin: 6px 0 0; font-size: 15px; color: var(--on-surface-variant); }
+
+/* ================= halaman destinasi (peta + list) ================= */
+.dest-page {
+  max-width: var(--container-max); margin: 0 auto;
+  padding: var(--sp-3) var(--sp-5) var(--sp-5);
+  display: flex; flex-direction: column; gap: var(--sp-2);
+}
+.dest-head h2 { font-size: 40px; margin: 0 0 4px; }
+.dest-tabs { display: none; gap: var(--sp-1); }
+.dest-body {
+  display: grid; grid-template-columns: 3fr 2fr; gap: var(--sp-3);
+  min-height: 60vh;
+}
+.dest-map {
+  border-radius: var(--rounded-lg); overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  position: sticky; top: 80px; height: calc(100vh - 120px);
+}
+.dest-list {
+  display: grid; grid-template-columns: 1fr; gap: var(--sp-2);
+  align-content: start;
+}
+.map-pop { display: flex; flex-direction: column; gap: 4px; min-width: 180px; }
+.map-pop img {
+  width: 100%; height: 90px; object-fit: cover;
+  border-radius: var(--rounded-sm);
+}
+.map-pop b { font-size: 14px; }
+.map-pop small { color: var(--outline); }
+.map-pop a { color: var(--primary); font-weight: 600; font-size: 13px; }
+
+/* ================= venue serupa ================= */
+.vd-similar {
+  max-width: var(--container-max); margin: 0 auto;
+  padding: 0 var(--sp-5) var(--sp-4); width: 100%;
+}
+.vd-similar h2 { font-size: 28px; margin: 0 0 var(--sp-2); }
+.vd-similar-grid { grid-template-columns: repeat(4, 1fr); }
+
 /* ================= nav: struktur & burger ================= */
 .topnav { display: flex; flex-direction: column; padding: 0; }
 .topnav-row {
@@ -739,7 +806,9 @@
 @media (max-width: 1024px) {
   .home-layout { grid-template-columns: 1fr 320px; padding: var(--sp-3); }
   .venue-grid { grid-template-columns: repeat(2, 1fr); }
+  .vd-similar-grid { grid-template-columns: repeat(2, 1fr); }
   .layout { grid-template-columns: 360px 1fr; padding: var(--sp-3); }
+  .dest-body { grid-template-columns: 1fr 1fr; }
 }
 
 /* ================= mobile (<=720px) ================= */
@@ -831,6 +900,41 @@
   .vd-grid { grid-template-columns: 1fr; padding: var(--sp-3) var(--sp-2); }
   .vd-back { padding: 0 var(--sp-2); }
   .detail-page { padding: var(--sp-2); }
+
+  /* cara kerja: vertikal */
+  .howit { padding: var(--sp-3) var(--sp-2); }
+  .howit h2 { font-size: 26px; }
+  .howit-steps { grid-template-columns: 1fr; gap: var(--sp-3); }
+  .howit-steps::before {
+    top: 8%; bottom: 8%; left: 21px; right: auto;
+    border-top: none; border-left: 2px dashed var(--outline-variant);
+  }
+  .howit-steps li { padding-top: 0; padding-left: 60px; }
+
+  /* destinasi: tab peta/daftar */
+  .dest-page { padding: var(--sp-2); }
+  .dest-head h2 { font-size: 26px; }
+  .dest-tabs { display: flex; }
+  .dest-tabs button {
+    flex: 1; display: inline-flex; align-items: center; justify-content: center;
+    gap: 6px; padding: 11px; border: 1px solid var(--outline-variant);
+    border-radius: var(--rounded); background: var(--surface);
+    font-family: var(--font-body); font-size: 14px; font-weight: 600;
+    color: var(--on-surface-variant); cursor: pointer;
+  }
+  .dest-tabs button.active {
+    background: var(--primary); border-color: var(--primary);
+    color: var(--on-primary);
+  }
+  .dest-body { grid-template-columns: 1fr; min-height: 0; }
+  .dest-map { position: static; height: 60vh; }
+  .dest-body.tab-peta .dest-list { display: none; }
+  .dest-body.tab-daftar .dest-map { display: none; }
+
+  /* venue serupa */
+  .vd-similar { padding: 0 var(--sp-2) var(--sp-3); }
+  .vd-similar h2 { font-size: 22px; }
+  .vd-similar-grid { grid-template-columns: 1fr; }
 
   /* umum: touch target & tipografi */
   .card-add { width: 44px; height: 44px; }

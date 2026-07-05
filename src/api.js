@@ -8,6 +8,7 @@ async function get(path) {
 
 export const fetchVenues = () => get('/venues')
 export const fetchVenueDetail = (id) => get(`/venues/${id}`)
+export const fetchSimilar = (id) => get(`/venues/${id}/similar`)
 export const fetchHotels = () => get('/hotels')
 
 // URL foto venue (proxy backend; key server-side). w = lebar px.
