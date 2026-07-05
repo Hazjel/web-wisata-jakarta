@@ -32,13 +32,30 @@ export default function Home({ venues }) {
     return () => clearInterval(t)
   }, [])
 
+  // Bayesian weighted rating (IMDB): rating dibobot kredibilitas jumlah ulasan,
+  // supaya venue rating-5-dari-1-ulasan tidak mengungguli venue ikonik populer.
+  // WR = (v/(v+m))·R + (m/(v+m))·C ; m = median count, C = rata-rata rating.
+  const bayesian = useMemo(() => {
+    const counts = venues.map((v) => v.google_rating_count || 0)
+      .filter((c) => c > 0).sort((a, b) => a - b)
+    const m = counts.length ? counts[Math.floor(counts.length / 2)] : 1
+    const rated = venues.filter((v) => v.google_rating > 0)
+    const C = rated.length
+      ? rated.reduce((s, v) => s + v.google_rating, 0) / rated.length : 4
+    return (v) => {
+      const R = v.google_rating || 0
+      const vc = v.google_rating_count || 0
+      return (vc / (vc + m)) * R + (m / (vc + m)) * C
+    }
+  }, [venues])
+
   const filtered = useMemo(() => {
     let out = venues
     if (filter !== 'semua') out = out.filter((v) => groupOf(v.venue_category).id === filter)
     if (search) out = out.filter((v) =>
       v.name.toLowerCase().includes(search.toLowerCase()))
-    return [...out].sort((a, b) => b.google_rating - a.google_rating)
-  }, [venues, filter, search])
+    return [...out].sort((a, b) => bayesian(b) - bayesian(a))
+  }, [venues, filter, search, bayesian])
 
   return (
     <>
