@@ -281,7 +281,9 @@
 }
 .hero-bg img {
   width: 100%; height: 100%; object-fit: cover;
-  transform: scale(1.12);
+  /* transform DASAR = titik AKHIR pan. Saat slide kehilangan .active dan
+     animasi dilepas, img tetap di posisi ini (tidak lompat/"kaget"). */
+  transform: scale(1.12) translateX(-3.5%);
   backface-visibility: hidden;
 }
 .hero-bg.active {
