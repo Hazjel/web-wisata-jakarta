@@ -1,65 +1,84 @@
+import Icon from './Icon.jsx'
+
+// Timeline vertikal per hari — motif "garis rute" (identitas visual situs).
+// Bahasa murni untuk turis: tanpa istilah teknis optimasi.
+
+function fmtJam(mnt) {
+  const jam = mnt / 60
+  return jam >= 1 ? `${Math.round(jam * 10) / 10} jam` : `${Math.round(mnt)} menit`
+}
+
 export default function ItineraryResult({ data }) {
   const s = data.summary
+
   return (
     <div className="itinerary-result">
-      <div className="summary">
-        <span><b>{s.n_visited}</b>/{s.n_candidates} venue</span>
-        <span>total perjalanan <b>{Math.round(s.travel_total_min)} mnt</b></span>
-        <span>pelanggaran jam <b>{s.violations}</b></span>
-        <span>bolak-balik zona <b>{s.zone_revisit}</b></span>
-        <span>algoritma <b>{data.params.algorithm.toUpperCase()}</b></span>
+      <div className="trip-summary">
+        <span><Icon name="pin" size={15} /> <b>{s.n_visited}</b> destinasi</span>
+        <span><Icon name="clock" size={15} /> <b>{data.days.length}</b> hari</span>
+        <span><Icon name="route" size={15} /> total perjalanan <b>{fmtJam(s.travel_total_min)}</b></span>
+        <span className="trip-summary-note">sudah termasuk jeda makan siang</span>
       </div>
 
-      {data.days.map((day) => (
-        <div key={day.day_index} className="day-card">
-          <h3>Hari {day.day_index} — {day.day_name}</h3>
-          <table>
-            <tbody>
+      {data.days.map((day) => {
+        let no = 0
+        return (
+          <section key={day.day_index} className="tl-day">
+            <h3 className="tl-day-title">
+              Hari {day.day_index} <span>— {day.day_name}</span>
+            </h3>
+            <ol className="tl">
               {day.visits.map((v, i) => {
                 if (v.type === 'break') {
                   return (
-                    <tr key={i} className="row-break">
-                      <td>{v.start}–{v.depart}</td>
-                      <td colSpan="2">🍽️ Istirahat makan siang</td>
-                    </tr>
+                    <li key={i} className="tl-item tl-break">
+                      <span className="tl-time">{v.start}–{v.depart}</span>
+                      <span className="tl-node"><Icon name="clock" size={14} /></span>
+                      <div className="tl-body">
+                        <b>Istirahat makan siang</b>
+                        <small>±60 menit — cari kuliner di sekitar lokasi</small>
+                      </div>
+                    </li>
                   )
                 }
                 if (v.type === 'return') {
                   return (
-                    <tr key={i} className="row-return">
-                      <td>{v.depart_prev}</td>
-                      <td colSpan="2">
-                        🏨 Kembali ke hotel (perjalanan {Math.round(v.travel_min)} mnt,
-                        tiba {v.arrival})
-                      </td>
-                    </tr>
+                    <li key={i} className="tl-item tl-return">
+                      <span className="tl-time">{v.arrival}</span>
+                      <span className="tl-node tl-node-end"><Icon name="pin" size={14} /></span>
+                      <div className="tl-body">
+                        <b>Kembali ke hotel</b>
+                        <small>perjalanan {Math.round(v.travel_min)} menit</small>
+                      </div>
+                    </li>
                   )
                 }
+                no += 1
                 return (
-                  <tr key={i}>
-                    <td>{v.start}–{v.depart}</td>
-                    <td>
+                  <li key={i} className="tl-item">
+                    <span className="tl-time">{v.start}–{v.depart}</span>
+                    <span className="tl-node tl-node-num">{no}</span>
+                    <div className="tl-body">
+                      <span className="tl-leg">
+                        {Math.round(v.travel_min)} menit dari {v.from_hotel ? 'hotel' : 'lokasi sebelumnya'}
+                        {v.wait_min > 0 && ` · menunggu buka ${Math.round(v.wait_min)} menit`}
+                      </span>
                       <b>{v.name}</b>
                       <span className="venue-tag">{v.venue_category}</span>
-                      {v.wait_min > 0 &&
-                        <small className="wait"> (menunggu buka {Math.round(v.wait_min)} mnt)</small>}
-                    </td>
-                    <td className="travel">
-                      🚗 {Math.round(v.travel_min)} mnt
-                      {v.from_hotel ? ' dari hotel' : ''}
-                    </td>
-                  </tr>
+                    </div>
+                  </li>
                 )
               })}
-            </tbody>
-          </table>
-        </div>
-      ))}
+            </ol>
+          </section>
+        )
+      })}
 
       {data.not_fitted.length > 0 && (
         <div className="not-fitted">
           <b>Tidak termuat dalam {data.days.length} hari:</b>{' '}
-          {data.not_fitted.map((v) => v.name).join(', ')}
+          {data.not_fitted.map((v) => v.name).join(', ')}.
+          <small> Tambah jumlah hari untuk memuat semuanya.</small>
         </div>
       )}
     </div>

@@ -71,7 +71,7 @@ export default function Home({ venues }) {
         </div>
         <div className="hero-overlay" />
         <div className="hero-inner">
-          <span className="hero-eyebrow">Riset HUMIC · {venues.length} destinasi terkurasi</span>
+          <span className="hero-eyebrow">{venues.length || 161} destinasi terkurasi di Jakarta</span>
           <h1>Satu hari atau lima,<br />rutenya kami yang susun.</h1>
           <p>Pilih tempat yang kamu mau — sistem menyusun urutan kunjungan,
             pembagian hari, dan jam optimalnya. Tanpa bolak-balik, tanpa
