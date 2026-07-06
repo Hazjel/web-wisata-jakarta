@@ -27,6 +27,7 @@ export default function ItineraryMap({ data }) {
     async function buildLegs() {
       setLegs([])
       const out = []
+      const vehicle = data.params?.vehicle || 'mobil'
       const hotel = [data.hotel.latitude, data.hotel.longitude]
       // gambar hari TERAKHIR dulu -> hari 1 di layer atas (paling tebal)
       for (const day of [...data.days].reverse()) {
@@ -37,7 +38,7 @@ export default function ItineraryMap({ data }) {
           hotel]
         for (let i = 0; i < stops.length - 1; i++) {
           const [a, b] = [stops[i], stops[i + 1]]
-          const pts = await osrmGeometry(a[0], a[1], b[0], b[1])
+          const pts = await osrmGeometry(a[0], a[1], b[0], b[1], vehicle)
           if (cancelled) return
           if (pts) {
             // rute jalan solid + segmen akses dashed (snap-point -> pin venue)

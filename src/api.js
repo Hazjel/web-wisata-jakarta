@@ -27,12 +27,16 @@ export async function requestItinerary(body) {
   return r.json()
 }
 
-// Geometri rute jalan asli dari OSRM public (pola sama dgn peta notebook 06).
+// Geometri rute jalan asli dari OSRM public.
+// vehicle 'motor' -> profil bike (routing.openstreetmap.de) yang MENGHINDARI
+// tol/motorway (motor dilarang tol); moda lain -> profil driving.
 // null kalau gagal -> caller fallback garis lurus.
-export async function osrmGeometry(lat1, lon1, lat2, lon2) {
-  const url =
-    `https://router.project-osrm.org/route/v1/driving/` +
-    `${lon1},${lat1};${lon2},${lat2}?overview=full&geometries=geojson`
+export async function osrmGeometry(lat1, lon1, lat2, lon2, vehicle = 'mobil') {
+  const url = vehicle === 'motor'
+    ? `https://routing.openstreetmap.de/routed-bike/route/v1/driving/` +
+      `${lon1},${lat1};${lon2},${lat2}?overview=full&geometries=geojson`
+    : `https://router.project-osrm.org/route/v1/driving/` +
+      `${lon1},${lat1};${lon2},${lat2}?overview=full&geometries=geojson`
   try {
     const r = await fetch(url)
     const data = await r.json()
