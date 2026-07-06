@@ -7,7 +7,6 @@ const DAYS = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu']
 const VEHICLES = [
   { key: 'mobil', icon: 'car', label: 'Mobil' },
   { key: 'motor', icon: 'motorbike', label: 'Motor' },
-  { key: 'umum', icon: 'bus', label: 'Umum' },
 ]
 
 const label = 'flex flex-col gap-1.5 text-sm font-semibold text-on-surface-variant'
@@ -118,7 +117,7 @@ export default function TripForm({ hotels, venues, loading, onSubmit,
 
       <div className={label}>
         Kendaraan
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-2 gap-2">
           {VEHICLES.map((v) => (
             <button key={v.key} type="button" onClick={() => setVehicle(v.key)}
               className={`flex cursor-pointer flex-col items-center gap-1 rounded-lg border p-2.5 text-[13px] transition
