@@ -1,8 +1,14 @@
 import { useState } from 'react'
 import { useSelection } from '../context/SelectionContext.jsx'
+import Icon from './Icon.jsx'
 import VenuePicker from './VenuePicker.jsx'
 
 const DAYS = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu']
+const VEHICLES = [
+  { key: 'mobil', icon: 'car', label: 'Mobil' },
+  { key: 'motor', icon: 'motorbike', label: 'Motor' },
+  { key: 'umum', icon: 'bus', label: 'Umum' },
+]
 
 const label = 'flex flex-col gap-1.5 text-sm font-semibold text-on-surface-variant'
 const input = `rounded-lg border border-outline-variant bg-white px-3 py-2.5 text-[15px] font-normal
@@ -27,6 +33,7 @@ export default function TripForm({ hotels, venues, loading, onSubmit,
     initialValues.hotel_id !== null && initialValues.hotel_id !== undefined
       ? String(initialValues.hotel_id) : '')
   const [hotelSearch, setHotelSearch] = useState('')
+  const [vehicle, setVehicle] = useState(initialValues.vehicle ?? 'mobil')
   const [error, setError] = useState('')
 
   const hotelOptions = hotels
@@ -51,6 +58,7 @@ export default function TripForm({ hotels, venues, loading, onSubmit,
       start_day: startDay,
       hotel_id: hotelId === '' ? null : Number(hotelId),
       venue_ids: mode === 'manual' ? selectedVenues : null,
+      vehicle,
       // algorithm tidak dikirim -> backend pilih otomatis dari hasil
       // eksperimen (hybrid utk 1-3 hari, GA utk 4-5 hari)
     })
@@ -106,6 +114,22 @@ export default function TripForm({ hotels, venues, loading, onSubmit,
             {DAYS.map((d) => <option key={d} value={d}>{d}</option>)}
           </select>
         </label>
+      </div>
+
+      <div className={label}>
+        Kendaraan
+        <div className="grid grid-cols-3 gap-2">
+          {VEHICLES.map((v) => (
+            <button key={v.key} type="button" onClick={() => setVehicle(v.key)}
+              className={`flex cursor-pointer flex-col items-center gap-1 rounded-lg border p-2.5 text-[13px] transition
+                ${vehicle === v.key
+                  ? 'border-primary bg-primary font-semibold text-white'
+                  : 'border-outline-variant bg-white font-medium text-on-surface-variant hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)]'}`}>
+              <Icon name={v.icon} size={22} />
+              {v.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       <label className={label}>

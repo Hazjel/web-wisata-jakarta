@@ -30,6 +30,7 @@ function bodyToParams(body) {
   p.set('day', body.start_day)
   if (body.hotel_id !== null && body.hotel_id !== undefined)
     p.set('hotel', body.hotel_id)
+  if (body.vehicle && body.vehicle !== 'mobil') p.set('veh', body.vehicle)
   if (body.venue_ids) { p.set('mode', 'manual'); p.set('v', body.venue_ids.join(',')) }
   return p
 }
@@ -42,6 +43,7 @@ function paramsToBody(p) {
     n_days: Number(p.get('d')) || 2,
     start_day: p.get('day') || 'Sabtu',
     hotel_id: p.get('hotel') !== null && p.get('hotel') !== '' ? Number(p.get('hotel')) : null,
+    vehicle: p.get('veh') || 'mobil',
     venue_ids: manual ? p.get('v').split(',') : null,
   }
 }

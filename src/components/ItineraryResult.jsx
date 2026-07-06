@@ -21,7 +21,8 @@ export default function ItineraryResult({ data }) {
         <span className="inline-flex items-center gap-1.5">
           <Icon name="clock" size={15} /> <b>{data.days.length}</b> hari</span>
         <span className="inline-flex items-center gap-1.5">
-          <Icon name="route" size={15} /> total perjalanan <b>{fmtJam(s.travel_total_min)}</b></span>
+          <Icon name="route" size={15} /> total perjalanan <b>{fmtJam(s.travel_total_min)}</b>
+          {data.params?.vehicle_label && ` (${data.params.vehicle_label})`}</span>
         <span className="w-full md:ml-auto md:w-auto text-xs opacity-75">
           sudah termasuk jeda makan siang</span>
       </div>
