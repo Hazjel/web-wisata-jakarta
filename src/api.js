@@ -15,8 +15,11 @@ export const fetchVenueDetail = (id) => get(`/venues/${id}`)
 export const fetchSimilar = (id) => get(`/venues/${id}/similar`)
 export const fetchHotels = () => get('/hotels')
 
-// URL foto venue (proxy backend; key server-side). w = lebar px.
-export const venuePhotoUrl = (id, w = 800) => `${API_BASE}/venues/${id}/photo?w=${w}`
+// Foto venue = aset statis di /photos/{id}.jpg (di-bundle saat deploy, lihat
+// bundle_photos.py di repo model). Tak lewat backend -> tak butuh Google key
+// runtime & cepat di Vercel static. Komponen <img> punya onError fallback bila
+// foto tak ada. Param w diabaikan (satu ukuran ~800px).
+export const venuePhotoUrl = (id) => `/photos/${id}.jpg`
 
 export async function requestItinerary(body) {
   const r = await fetch(`${API_BASE}/itinerary`, {
