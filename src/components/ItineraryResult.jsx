@@ -86,13 +86,28 @@ export default function ItineraryResult({ data }) {
         )
       })}
 
-      {data.not_fitted.length > 0 && (
-        <div className="rounded-xl bg-error-container px-6 py-4 text-[13px] text-on-error-container">
-          <b>Tidak termuat dalam {data.days.length} hari:</b>{' '}
-          {data.not_fitted.map((v) => v.name).join(', ')}.
-          <small className="print:hidden"> Tambah jumlah hari untuk memuat semuanya.</small>
-        </div>
-      )}
+      {data.not_fitted.length > 0 && (() => {
+        const tutup = data.not_fitted.filter((v) => v.reason === 'tutup')
+        const penuh = data.not_fitted.filter((v) => v.reason !== 'tutup')
+        return (
+          <div className="rounded-xl bg-error-container px-6 py-4 text-[13px] text-on-error-container">
+            {penuh.length > 0 && (
+              <div>
+                <b>Belum termuat dalam {data.days.length} hari:</b>{' '}
+                {penuh.map((v) => v.name).join(', ')}.
+                <small className="print:hidden"> Tambah jumlah hari untuk memuat semuanya.</small>
+              </div>
+            )}
+            {tutup.length > 0 && (
+              <div className={penuh.length > 0 ? 'mt-2' : ''}>
+                <b>Tutup pada hari yang dipilih:</b>{' '}
+                {tutup.map((v) => v.name).join(', ')}.
+                <small className="print:hidden"> Coba pilih hari mulai yang berbeda.</small>
+              </div>
+            )}
+          </div>
+        )
+      })()}
     </div>
   )
 }
