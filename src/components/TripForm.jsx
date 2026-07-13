@@ -134,10 +134,10 @@ export default function TripForm({ hotels, venues, loading, onSubmit,
       <label className={label}>
         Hotel (titik berangkat/pulang)
         <input className={input} value={hotelSearch}
-          onChange={(e) => setHotelSearch(e.target.value)} placeholder="cari hotel..." />
-        <small className="font-normal text-outline">{hotelOptions.length} hotel tersedia</small>
+          onChange={(e) => setHotelSearch(e.target.value)}
+          placeholder="ketik untuk menyaring hotel..." />
         <select className={input} value={hotelId}
-          onChange={(e) => setHotelId(e.target.value)} size="6">
+          onChange={(e) => setHotelId(e.target.value)}>
           <option value="">(default: pusat kota)</option>
           {hotelOptions.map((h) => (
             <option key={h.hotel_id} value={h.hotel_id}>
@@ -145,6 +145,7 @@ export default function TripForm({ hotels, venues, loading, onSubmit,
             </option>
           ))}
         </select>
+        <small className="font-normal text-outline">{hotelOptions.length} hotel tersedia</small>
       </label>
 
       {error && (
