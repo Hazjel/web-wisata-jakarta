@@ -1,7 +1,11 @@
-// Client tipis ke backend FastAPI (via proxy /api di vite.config.js)
+// Client tipis ke backend FastAPI.
+// Dev: proxy /api -> localhost:8000 (vite.config.js).
+// Produksi: set VITE_API_URL ke URL backend (mis. https://xxx.onrender.com),
+// tanpa trailing slash. Kalau kosong, pakai /api (proxy dev).
+const API_BASE = import.meta.env.VITE_API_URL || '/api'
 
 async function get(path) {
-  const r = await fetch(`/api${path}`)
+  const r = await fetch(`${API_BASE}${path}`)
   if (!r.ok) throw new Error(`GET ${path} -> ${r.status}`)
   return r.json()
 }
@@ -12,10 +16,10 @@ export const fetchSimilar = (id) => get(`/venues/${id}/similar`)
 export const fetchHotels = () => get('/hotels')
 
 // URL foto venue (proxy backend; key server-side). w = lebar px.
-export const venuePhotoUrl = (id, w = 800) => `/api/venues/${id}/photo?w=${w}`
+export const venuePhotoUrl = (id, w = 800) => `${API_BASE}/venues/${id}/photo?w=${w}`
 
 export async function requestItinerary(body) {
-  const r = await fetch('/api/itinerary', {
+  const r = await fetch(`${API_BASE}/itinerary`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
