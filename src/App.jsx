@@ -14,12 +14,14 @@ export default function App() {
   const [hotels, setHotels] = useState([])
   const [venues, setVenues] = useState([])
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     Promise.all([fetchHotels(), fetchVenues()])
       .then(([h, v]) => { setHotels(h); setVenues(v) })
       .catch(() => setError(
         'Gagal terhubung ke backend. Jalankan dulu: uvicorn src.api.api:app --reload'))
+      .finally(() => setLoading(false))
   }, [])
 
   return (
@@ -30,6 +32,12 @@ export default function App() {
           {error && (
             <p className="mx-auto mt-4 w-full max-w-[1280px] rounded-lg bg-error-container px-3 py-2.5 text-sm text-on-error-container">
               {error}
+            </p>
+          )}
+          {loading && !error && (
+            <p className="mx-auto mt-4 flex w-full max-w-[1280px] items-center gap-2 px-3 py-2.5 text-sm text-on-surface-variant">
+              <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-outline-variant border-t-primary" />
+              Memuat data destinasi…
             </p>
           )}
           <div className="flex-1">
