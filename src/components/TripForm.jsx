@@ -31,13 +31,22 @@ export default function TripForm({ hotels, venues, loading, onSubmit,
   const [hotelId, setHotelId] = useState(
     initialValues.hotel_id !== null && initialValues.hotel_id !== undefined
       ? String(initialValues.hotel_id) : '')
-  const [hotelSearch, setHotelSearch] = useState('')
+  const [hotelQuery, setHotelQuery] = useState('')
+  const [hotelOpen, setHotelOpen] = useState(false)
   const [vehicle, setVehicle] = useState(initialValues.vehicle ?? 'mobil')
   const [error, setError] = useState('')
 
+  const selectedHotel = hotels.find((h) => String(h.hotel_id) === hotelId)
   const hotelOptions = hotels
-    .filter((h) => h.name.toLowerCase().includes(hotelSearch.toLowerCase()))
+    .filter((h) => h.name.toLowerCase().includes(hotelQuery.toLowerCase()))
     .sort((a, b) => b.google_rating - a.google_rating)
+    .slice(0, 8)
+
+  function pickHotel(h) {
+    if (h) { setHotelId(String(h.hotel_id)); setHotelQuery('') }
+    else { setHotelId(''); setHotelQuery('') }
+    setHotelOpen(false)
+  }
 
   function submit(e) {
     e.preventDefault()
@@ -133,19 +142,35 @@ export default function TripForm({ hotels, venues, loading, onSubmit,
 
       <label className={label}>
         Hotel (titik berangkat/pulang)
-        <input className={input} value={hotelSearch}
-          onChange={(e) => setHotelSearch(e.target.value)}
-          placeholder="ketik untuk menyaring hotel..." />
-        <select className={input} value={hotelId}
-          onChange={(e) => setHotelId(e.target.value)}>
-          <option value="">(default: pusat kota)</option>
-          {hotelOptions.map((h) => (
-            <option key={h.hotel_id} value={h.hotel_id}>
-              {h.name} — ⭐{h.google_rating}
-            </option>
-          ))}
-        </select>
-        <small className="font-normal text-outline">{hotelOptions.length} hotel tersedia</small>
+        <div className="relative">
+          <input className={`${input} w-full`}
+            value={hotelOpen ? hotelQuery : (selectedHotel ? selectedHotel.name : '')}
+            onChange={(e) => { setHotelQuery(e.target.value); setHotelOpen(true) }}
+            onFocus={() => { setHotelQuery(''); setHotelOpen(true) }}
+            onBlur={() => setTimeout(() => setHotelOpen(false), 150)}
+            placeholder="(default: pusat kota) — ketik nama hotel..." />
+          {hotelOpen && (
+            <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-lg border border-outline-variant bg-white shadow-lg">
+              <li>
+                <button type="button" onMouseDown={() => pickHotel(null)}
+                  className="w-full px-3 py-2 text-left text-[14px] text-outline hover:bg-surface-gray">
+                  (default: pusat kota)
+                </button>
+              </li>
+              {hotelOptions.map((h) => (
+                <li key={h.hotel_id}>
+                  <button type="button" onMouseDown={() => pickHotel(h)}
+                    className="w-full px-3 py-2 text-left text-[14px] text-night hover:bg-surface-gray">
+                    {h.name} — ⭐{h.google_rating}
+                  </button>
+                </li>
+              ))}
+              {hotelOptions.length === 0 && (
+                <li className="px-3 py-2 text-[13px] text-outline">Tak ada hotel cocok</li>
+              )}
+            </ul>
+          )}
+        </div>
       </label>
 
       {error && (
