@@ -5,11 +5,15 @@ import { useSelection } from '../context/SelectionContext.jsx'
 import { groupOf, PRICE_LABEL } from '../lib/categories.js'
 import Icon from './Icon.jsx'
 
+// Hari ini dlm indeks backend (0=Senin..6=Minggu). JS getDay(): 0=Minggu.
+const TODAY_ID = (new Date().getDay() + 6) % 7
+
 export default function VenueCard({ venue }) {
   const { selected, toggle } = useSelection()
   const g = groupOf(venue.venue_category)
   const isSelected = selected.includes(String(venue.venue_id))
   const [imgOk, setImgOk] = useState(venue.has_photo)
+  const closedToday = venue.closed_days?.includes(TODAY_ID)
 
   return (
     <div className={`relative flex flex-col overflow-hidden rounded-xl border bg-white
@@ -27,6 +31,12 @@ export default function VenueCard({ venue }) {
           </span>
         )}
       </Link>
+      {closedToday && (
+        <span className="absolute left-3 top-3 rounded-md bg-error-container px-2 py-0.5
+          text-[11px] font-semibold text-on-error-container shadow-sm">
+          Tutup hari ini
+        </span>
+      )}
       <button
         onClick={() => toggle(venue.venue_id)}
         title={isSelected ? 'Hapus dari pilihan' : 'Tambah ke pilihan'}
