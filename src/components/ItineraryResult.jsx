@@ -1,4 +1,5 @@
 import Icon from './Icon.jsx'
+import LegDirections from './LegDirections.jsx'
 
 // Timeline vertikal per hari — motif "garis rute" (garis dashed di App.css).
 // Bahasa murni untuk turis: tanpa istilah teknis optimasi.
@@ -29,6 +30,7 @@ export default function ItineraryResult({ data }) {
 
       {data.days.map((day) => {
         let no = 0
+        let prevCoord = [data.hotel.latitude, data.hotel.longitude]
         return (
           <section key={day.day_index} className="tl-day">
             <h3 className="mb-4 text-[22px]">
@@ -66,6 +68,9 @@ export default function ItineraryResult({ data }) {
                   )
                 }
                 no += 1
+                const legFrom = prevCoord
+                const legTo = [v.latitude, v.longitude]
+                prevCoord = legTo
                 return (
                   <li key={i} className="tl-item">
                     <span className="tl-time">{v.start}–{v.depart}</span>
@@ -77,6 +82,8 @@ export default function ItineraryResult({ data }) {
                       </span>
                       <b className="text-base leading-tight">{v.name}</b>
                       <span className={tag}>{v.venue_category}</span>
+                      <LegDirections from={legFrom} to={legTo}
+                        vehicle={data.params?.vehicle} travelMin={v.travel_min} />
                     </div>
                   </li>
                 )
