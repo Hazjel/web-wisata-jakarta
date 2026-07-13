@@ -7,7 +7,7 @@ const GROUPS = [
   {
     id: 'budaya', label: 'Budaya & Sejarah', icon: 'landmark', tint: '#003b72',
     match: ['Museum', 'History Museum', 'Art Museum', 'Art Gallery',
-      'Science Museum', 'Monument / Landmark', 'Historic Site'],
+      'Science Museum', 'Monument / Landmark', 'Historic Site', 'Library'],
   },
   {
     id: 'religi', label: 'Religi', icon: 'temple', tint: '#005a6d',
