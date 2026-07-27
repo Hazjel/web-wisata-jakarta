@@ -9,7 +9,7 @@ riset HUMIC: rekomendasi itinerary wisata Jakarta multi-hari berbasis
 - **Mode otomatis** — turis isi preferensi teks (mis. "museum sejarah budaya"),
   budget, jumlah hari, hotel → sistem pilih kandidat venue (CBF) dan susun
   itinerary optimal per hari
-- **Mode manual** (ala go-routes.com) — turis centang sendiri venue dari 162
+- **Mode manual** (ala go-routes.com) — turis centang sendiri venue dari 166
   destinasi → sistem susun urutan & pembagian hari
 - Itinerary per hari: jam kunjungan, waktu perjalanan antar venue, istirahat
   makan siang otomatis, jam kembali ke hotel — dijamin tanpa pelanggaran jam
@@ -41,7 +41,7 @@ Request `/api/*` di-proxy ke `http://localhost:8000` (lihat `vite.config.js`).
 
 | Endpoint | Keterangan |
 |----------|-----------|
-| `GET /venues` | 162 venue: `venue_id, name, venue_category, zone_id, google_rating, price_level, latitude, longitude` |
+| `GET /venues` | 166 venue: `venue_id, name, venue_category, zone_id, google_rating, price_level, latitude, longitude` |
 | `GET /hotels` | 181 hotel: `hotel_id, name, google_rating, latitude, longitude` |
 | `POST /itinerary` | susun itinerary |
 
