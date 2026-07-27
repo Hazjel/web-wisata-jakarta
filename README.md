@@ -2,7 +2,7 @@
 
 Frontend (Vite + React) untuk [sistem-rekomendasi-destinasi-wisata-jakarta](https://github.com/Hazjel/sistem-rekomendasi-destinasi-wisata-jakarta) —
 riset HUMIC: rekomendasi itinerary wisata Jakarta multi-hari berbasis
-**Content-Based Filtering (TF-IDF + MMR) + optimasi rute GA / PSO / GA-PSO Hybrid**.
+**Content-Based Filtering (TF-IDF + MMR) + optimasi rute GA / PSO / GA-PSO Hybrid / GWO-TS**.
 
 ## Fitur
 
@@ -16,7 +16,7 @@ riset HUMIC: rekomendasi itinerary wisata Jakarta multi-hari berbasis
   buka & tanpa rute bolak-balik zona
 - Peta interaktif (react-leaflet): rute jalan asli (OSRM), segmen akses venue
   putus-putus, warna beda per hari
-- Pilihan algoritma: GA (default) / PSO / Hybrid — untuk demo perbandingan
+- Pilihan algoritma: GWO-TS (default, auto) / GA / PSO / Hybrid — untuk demo perbandingan
 
 ## Prasyarat
 
@@ -75,7 +75,7 @@ src/
   api.js                       — client API + fetch geometri OSRM
   App.jsx                      — layout form kiri / hasil+peta kanan
   components/TripForm.jsx      — form input + toggle mode otomatis/manual
-  components/VenuePicker.jsx   — checkbox 162 venue (search + filter kategori)
+  components/VenuePicker.jsx   — checkbox 166 venue (search + filter kategori)
   components/ItineraryResult.jsx — kartu itinerary per hari
   components/ItineraryMap.jsx  — peta react-leaflet + rute OSRM
 ```
