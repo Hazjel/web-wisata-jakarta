@@ -4,6 +4,7 @@ import { CircleMarker, MapContainer, Popup, TileLayer } from 'react-leaflet'
 import Icon from '../components/Icon.jsx'
 import VenueCard from '../components/VenueCard.jsx'
 import { CATEGORY_GROUPS, groupOf } from '../lib/categories.js'
+import { TILE_LAYER } from '../lib/map.js'
 import { venuePhotoUrl } from '../api.js'
 
 const JAKARTA_CENTER = [-6.21, 106.845]
@@ -75,9 +76,7 @@ export default function Destinations({ venues }) {
             ${tab === 'daftar' ? 'hidden md:block' : ''}`}>
           <MapContainer center={JAKARTA_CENTER} zoom={11} className="map"
             style={{ height: '100%' }}>
-            <TileLayer
-              attribution='&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap'
-              url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
+            <TileLayer {...TILE_LAYER} />
             {filtered.map((v) => {
               const g = groupOf(v.venue_category)
               return (

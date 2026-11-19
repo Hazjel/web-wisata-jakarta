@@ -89,6 +89,8 @@
 /* --- Leaflet --- */
 .map { height: 55vh; min-height: 280px; width: 100%; }
 @media (max-width: 719px) { .map { height: 45vh; } }
+/* basemap OSM diredam (hanya tile; marker/rute/tooltip ada di pane lain) */
+.leaflet-tile-pane { filter: saturate(.35) brightness(1.05); }
 .hotel-marker {
   font-size: 22px; text-align: center; line-height: 28px;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));

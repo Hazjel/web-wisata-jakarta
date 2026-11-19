@@ -6,6 +6,7 @@ import Icon from '../components/Icon.jsx'
 import VenueCard from '../components/VenueCard.jsx'
 import { useSelection } from '../context/SelectionContext.jsx'
 import { groupOf, PRICE_LABEL } from '../lib/categories.js'
+import { TILE_LAYER } from '../lib/map.js'
 
 // Rentang jam buka ringkas: kelompokkan hari dgn jam sama jadi "Setiap hari"
 function summarizeHours(hours) {
@@ -178,9 +179,7 @@ export default function VenueDetail() {
           <div className="overflow-hidden rounded-xl border border-border-subtle shadow-[0_1px_1px_rgba(0,0,0,0.05)]">
             <MapContainer center={[venue.latitude, venue.longitude]} zoom={15}
               className="map" style={{ height: 240 }}>
-              <TileLayer
-                attribution='&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap'
-                url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
+              <TileLayer {...TILE_LAYER} />
               <Marker position={[venue.latitude, venue.longitude]}>
                 <Tooltip permanent>{venue.name}</Tooltip>
               </Marker>

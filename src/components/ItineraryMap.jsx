@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, Polyline, Tooltip } from 'react-leafle
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { osrmGeometry } from '../api.js'
+import { TILE_LAYER } from '../lib/map.js'
 
 // fix icon default leaflet di bundler
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
@@ -61,9 +62,7 @@ export default function ItineraryMap({ data }) {
 
   return (
     <MapContainer center={hotel} zoom={12} className="map">
-      <TileLayer
-        attribution='&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap'
-        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
+      <TileLayer {...TILE_LAYER} />
 
       <Marker position={hotel} icon={hotelIcon}>
         <Tooltip>HOTEL: {data.hotel.name}</Tooltip>
